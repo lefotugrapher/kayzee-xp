@@ -1,0 +1,91 @@
+/* Kayzee Explorer (apps-owned). Scoped under .app-browser */
+.app-browser { container-type: inline-size; container-name: kxbrowser; }
+
+/* throbber in the menubar corner */
+.app-browser .br-throbber {
+  margin-left: auto; align-self: stretch; width: 44px; margin-top: -1px; margin-bottom: -1px; display: grid; place-items: center;
+  background: linear-gradient(180deg, #fff 0, #eef2fb 100%); border-left: 1px solid #d8d2bd;
+}
+.app-browser .br-throbber svg { width: 26px; height: 26px; }
+.app-browser .br-orbit { transform-origin: 16px 16px; transform-box: view-box; }
+.app-browser.br-loading .br-throbber .br-orbit, .app-browser .br-loader .br-orbit { animation: brspin 1.1s linear infinite; }
+@keyframes brspin { to { transform: rotate(360deg); } }
+.app-browser .kx-menubar { height: 24px; }
+
+/* toolbar: split Back/Forward drop arrows */
+.app-browser .kx-tool.br-drop { padding: 0 2px; margin-left: -2px; }
+.app-browser .kx-tool.br-drop .kx-tool-arrow { margin: 0; }
+
+/* page area */
+.app-browser .br-view { position: relative; flex: 1; min-height: 0; background: #fff; overflow: hidden; border-top: 1px solid #a5a196; }
+.app-browser .br-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+.app-browser .br-loader {
+  position: absolute; inset: 0; display: grid; place-items: center; background: #fff; animation: brfade .2s ease-out;
+}
+@keyframes brfade { from { opacity: 0; } }
+.app-browser .br-loader-card { display: flex; align-items: center; gap: 12px; font: 12px Tahoma, Verdana, sans-serif; color: #333; }
+.app-browser .br-loader-card b { display: block; font-size: 13px; color: #0b3c9e; margin-bottom: 2px; }
+.app-browser .br-loader-card span { color: #6d6c62; }
+.app-browser .br-loader-globe svg { width: 44px; height: 44px; display: block; }
+
+/* status bar zone + progress */
+.app-browser .br-zone { display: flex; align-items: center; gap: 6px; }
+.app-browser .br-prog { display: block; width: 100%; height: 11px; border: 1px solid #8a9bb5; background: #fff; padding: 1px; overflow: hidden; }
+.app-browser .br-prog span {
+  display: block; height: 100%; width: 100%;
+  background: repeating-linear-gradient(90deg, #3bb33b 0 7px, transparent 7px 9px);
+  background-size: 18px 100%; animation: brbar .8s linear infinite;
+  mask: linear-gradient(90deg, #000 0 40%, transparent 40%); -webkit-mask: linear-gradient(90deg, #000 0 40%, transparent 40%);
+  -webkit-mask-size: 250% 100%; mask-size: 250% 100%; animation: brbar .8s linear infinite, brmask 1.6s ease-in-out infinite;
+}
+@keyframes brbar { to { background-position: 18px 0; } }
+@keyframes brmask { from { -webkit-mask-position: 100% 0; mask-position: 100% 0; } to { -webkit-mask-position: -60% 0; mask-position: -60% 0; } }
+
+/* in-app pages */
+.app-browser .br-page { position: absolute; inset: 0; overflow: auto; background: #fff; color: #222; font: 12px/1.5 Verdana, Tahoma, sans-serif; -webkit-user-select: text; user-select: text; }
+.app-browser .br-link { color: #0033cc; text-decoration: underline; }
+.app-browser .br-link:hover { color: #e05a00; }
+.app-browser .br-link:visited { color: #551a8b; }
+.app-browser .br-muted { color: #777; }
+
+.app-browser .br-home { padding: 0 0 20px; }
+.app-browser .br-home-head {
+  display: flex; align-items: center; gap: 14px; padding: 18px 24px; color: #fff;
+  background: radial-gradient(120% 160% at 0 0, rgba(255,255,255,.25), rgba(255,255,255,0) 55%), linear-gradient(180deg, #3b7ff0, #2457c9);
+  border-bottom: 3px solid #f8a24a;
+}
+.app-browser .br-home-mark svg { width: 54px; height: 54px; display: block; filter: drop-shadow(0 2px 2px rgba(0,0,40,.35)); }
+.app-browser .br-home-head h1 { margin: 0; font: bold 22px/1.15 "Trebuchet MS", Tahoma, sans-serif; text-shadow: 1px 1px 0 #0b2a8a; }
+.app-browser .br-home-head p { margin: 4px 0 0; font: 12px/1.4 Tahoma, Verdana, sans-serif; color: #e2ecff; }
+.app-browser .br-sec { margin: 18px 24px 10px; font: bold 13px "Trebuchet MS", Tahoma, sans-serif; color: #1a4fb8; border-bottom: 1px solid #c5d5f3; padding-bottom: 3px; }
+.app-browser .br-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; padding: 0 24px; }
+.app-browser .br-card { display: flex; gap: 12px; padding: 10px; border: 1px solid #d5dcea; background: linear-gradient(180deg, #fff, #f5f8fe); border-radius: 3px; }
+.app-browser .br-card-thumb { flex: none; padding: 3px; border: 1px solid #c8c8c0; background: #fff; box-shadow: 2px 2px 3px rgba(0,0,0,.12); }
+.app-browser .br-card-thumb:hover { border-color: #316ac5; }
+.app-browser .br-card-body { min-width: 0; }
+.app-browser .br-card h2 { margin: 0 0 3px; font: bold 13px/1.3 Verdana, Tahoma, sans-serif; }
+.app-browser .br-card-meta { margin: 0 0 4px; color: #6d6c62; font-size: 11px; }
+.app-browser .br-card-desc { margin: 0; font-size: 11.5px; color: #333; }
+.app-browser .br-quick { margin: 0 24px; }
+.app-browser .br-foot { margin: 26px 24px 0; padding-top: 8px; border-top: 1px solid #e2e2e2; color: #999; font-size: 10px; text-align: center; }
+
+.app-browser .br-error { padding: 22px 28px; max-width: 640px; font: 12px/1.55 Tahoma, Verdana, sans-serif; }
+.app-browser .br-err-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.app-browser .br-err-ico svg { display: block; }
+.app-browser .br-error h1 { margin: 0; font: bold 17px/1.25 Tahoma, Verdana, sans-serif; color: #000; }
+.app-browser .br-error hr { border: 0; height: 1px; background: #c5d5f3; margin: 14px 0; }
+.app-browser .br-error ul { margin: 6px 0 0; padding-left: 20px; }
+.app-browser .br-error li { margin-bottom: 6px; }
+.app-browser .br-error code { font: 11px Menlo, "Courier New", monospace; background: #f3f3ee; padding: 1px 4px; border: 1px solid #e2e0d4; word-break: break-all; }
+.app-browser .br-err-addr { color: #444; }
+.app-browser .br-err-small { margin-top: 22px; color: #888; font-size: 11px; }
+
+@container kxbrowser (max-width: 560px) {
+  .app-browser .kx-tool .kx-tool-label { display: none; }
+  .app-browser .br-cards { grid-template-columns: 1fr; padding: 0 14px; }
+  .app-browser .br-home-head { padding: 14px; }
+  .app-browser .br-sec { margin-left: 14px; margin-right: 14px; }
+  .app-browser .br-quick { margin: 0 14px; }
+  .app-browser .br-card-thumb canvas, .app-browser .br-card-thumb .kx-thumb { width: 96px !important; height: 72px !important; }
+  .app-browser .kx-status-part:nth-child(2) { display: none; }
+}

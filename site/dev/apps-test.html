@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kayzee XP: apps test harness</title>
+<link rel="icon" href="data:,">
+<script>
+  // surface every failure visibly (and to CDP tests via window.__kzErrors)
+  window.__kzErrors = [];
+  (function () {
+    function box() {
+      var b = document.getElementById('errbox');
+      if (!b) { b = document.createElement('pre'); b.id = 'errbox'; (document.body || document.documentElement).appendChild(b); }
+      return b;
+    }
+    window.__kzErr = function (t) { window.__kzErrors.push(t); box().textContent += t + '\n'; };
+    window.onerror = function (m, s, l, c, e) { window.__kzErr('ERROR: ' + m + ' @ ' + s + ':' + l + ':' + c + (e && e.stack ? '\n' + e.stack : '')); };
+    window.addEventListener('unhandledrejection', function (e) { var r = e.reason; window.__kzErr('REJECTION: ' + (r && (r.stack || r.message) || r)); });
+    var ce = console.error.bind(console);
+    console.error = function () { try { window.__kzErr('console.error: ' + Array.prototype.map.call(arguments, String).join(' ').slice(0, 1200)); } catch (_) {} ce.apply(null, arguments); };
+  })();
+</script>
+<link rel="stylesheet" href="../xp.css">
+<style>
+  :root { --luna-body: #ece9d8; --ui-font: Tahoma, Verdana, "Segoe UI", sans-serif; --title-font: "Trebuchet MS", Tahoma, sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body {
+    font-family: var(--ui-font);
+    background:
+      radial-gradient(140% 70% at 30% 118%, #49b335 0 38%, transparent 38.2%),
+      radial-gradient(120% 60% at 90% 125%, #3a9d2b 0 40%, transparent 40.2%),
+      linear-gradient(180deg, #1d5fd6 0%, #4d93ec 45%, #9cc8f5 72%, #cfe6fb 100%);
+  }
+  #errbox {
+    position: fixed; left: 12px; top: 12px; z-index: 9999; max-width: 70vw; max-height: 50vh; overflow: auto; margin: 0;
+    padding: 10px 12px; background: #c00; color: #fff; font: 12px/1.4 Menlo, monospace; white-space: pre-wrap; border: 2px solid #fff;
+  }
+  #errbox:empty { display: none; }
+  /* fake window frame (mirrors style.css .xpwin / .titlebar / .cap) */
+  .hw {
+    position: absolute; display: flex; flex-direction: column;
+    border-radius: 8px 8px 1px 1px; padding: 0 4px 4px;
+    background: linear-gradient(90deg, #0742c6 0, #1a62ea 2px, #0b51d9 4px, #0b51d9 calc(100% - 4px), #0844c4 calc(100% - 2px), #063aad 100%);
+    box-shadow: 0 14px 40px rgba(0,10,40,.45), 0 3px 8px rgba(0,10,40,.3);
+  }
+  .hw.inactive { filter: saturate(.55) brightness(1.06); }
+  .hw.max { left: 0 !important; top: 0 !important; width: 100vw !important; height: 100vh !important; border-radius: 0; padding: 0; }
+  .hw .tb {
+    height: 31px; margin: 0 -4px; padding: 0 6px 0 7px; flex: none;
+    display: flex; align-items: center; gap: 6px; border-radius: 8px 8px 0 0; touch-action: none;
+    background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,0) 22%),
+      linear-gradient(180deg, #4aa0ff 0%, #2f8af9 5%, #1873f3 10%, #0d63ea 22%, #0a5be0 45%, #0958de 70%, #0b56d6 86%, #0a4cc2 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 1px 0 0 rgba(255,255,255,.25);
+  }
+  .hw.max .tb { margin: 0; border-radius: 0; }
+  .hw .ti { width: 18px; height: 18px; display: grid; place-items: center; }
+  .hw .tt { flex: 1; color: #fff; font: bold 13px/1 var(--title-font); text-shadow: 1px 1px 0 #0b2a8a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hw .caps { display: flex; gap: 2px; }
+  .hw .cap { width: 21px; height: 21px; padding: 0; position: relative; border: 1px solid #fff; border-radius: 3px;
+    background: radial-gradient(120% 120% at 30% 22%, #8cbcff 0%, #4b8dfb 32%, #2468ea 62%, #1c58d6 100%); }
+  .hw .cap.close { background: radial-gradient(120% 120% at 30% 22%, #f7b49a 0%, #ec7a52 30%, #dc5428 60%, #c2400f 100%); }
+  .hw .cap.min::after { content: ""; position: absolute; left: 5px; bottom: 5px; width: 7px; height: 3px; background: #fff; }
+  .hw .cap.max::after { content: ""; position: absolute; left: 4px; top: 4px; width: 10px; height: 10px; border: 1px solid #fff; border-top-width: 3px; }
+  .hw .cap.close::before, .hw .cap.close::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2.2px; margin: -1.1px 0 0 -6px; background: #fff; transform: rotate(45deg); }
+  .hw .cap.close::after { transform: rotate(-45deg); }
+  .hw .wb { flex: 1; min-height: 0; position: relative; background: var(--luna-body); }
+  .hw .rz { position: absolute; right: -2px; bottom: -2px; width: 16px; height: 16px; cursor: nwse-resize; touch-action: none; }
+  .app-root { position: absolute; inset: 0; }
+  #log { position: fixed; right: 8px; bottom: 6px; color: #fff; font: 11px Menlo, monospace; text-shadow: 0 1px 2px #000; pointer-events: none; max-width: 40vw; text-align: right; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div id="desk"></div>
+<div id="log"></div>
+<script type="module">
+import * as S from '../sprites.js';
+
+const qs = new URLSearchParams(location.search);
+const MOBILE = qs.get('mobile') === '1';
+const MOCK = qs.get('mock'); // ok | mailto | fail  (stubs /api/contact)
+const logEl = document.getElementById('log');
+const log = (...a) => { console.log('[harness]', ...a); logEl.textContent = a.join(' ').slice(0, 200); };
+window.__kzLog = [];
+
+// ---- stub /api/contact so the Mail app can be tested without the backend
+if (MOCK) {
+  const real = window.fetch.bind(window);
+  window.fetch = async (url, opts) => {
+    if (String(url).includes('/api/contact')) {
+      window.__kzLog.push({ contact: JSON.parse(opts && opts.body || '{}') });
+      await new Promise((r) => setTimeout(r, 300));
+      if (MOCK === 'fail') throw new TypeError('Failed to fetch (mock)');
+      if (MOCK === 'mailto') return new Response(JSON.stringify({ ok: false, mailto: 'mailto:test@example.com?subject=hi' }), { headers: { 'content-type': 'application/json' } });
+      return new Response(JSON.stringify({ ok: true }), { headers: { 'content-type': 'application/json' } });
+    }
+    return real(url, opts);
+  };
+}
+// mailto / window.open capture (tests read window.__kzLog)
+document.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+  if (a) { e.preventDefault(); window.__kzLog.push({ mailto: a.href }); log('mailto', a.href.slice(0, 80)); }
+}, true);
+const realOpen = window.open.bind(window);
+window.open = (u, ...rest) => { window.__kzLog.push({ open: String(u) }); log('window.open', u); if (qs.get('realopen')) return realOpen(u, ...rest); return null; };
+
+// ---- sprite icons (same mapping idea as core: key -> voxel sprite)
+const LIB = {
+  projects: S.buildFolder, folder: S.buildFolder, music: S.buildCD, resume: S.buildDoc, notepad: S.buildDoc, about: S.buildMonitor,
+  browser: S.buildMonitor, media: S.buildCD, contact: S.buildEnvelope, games: S.buildJoystick, mines: S.buildJoystick, solitaire: S.buildJoystick,
+  pinball: S.buildJoystick, recycle: S.buildBin, bin: S.buildBin, paint: S.buildFolder, sun: S.buildSun, speaker: S.buildSpeaker, net: S.buildNet,
+};
+const voxCache = {};
+function icon(key, px = 16) {
+  const build = LIB[key] || S.buildDoc;
+  const vox = voxCache[key] || (voxCache[key] = build());
+  const b = vox.bounds();
+  const scale = Math.max(1, Math.round((px * Math.min(2, devicePixelRatio || 1)) / Math.max(b.w, b.h)));
+  const c = S.sprite2D(vox, scale, { shadow: px >= 24, bevel: px >= 32 });
+  c.style.width = px + 'px'; c.style.height = 'auto';
+  c.setAttribute('role', 'img'); c.setAttribute('aria-label', key);
+  return c;
+}
+
+const sitePromise = fetch('/data/site.json').then((r) => r.json());
+const desk = document.getElementById('desk');
+const wins = [];
+let z = 10;
+let spawn = 0;
+
+function cssLoaded(id) {
+  return new Promise((res) => {
+    if (document.querySelector(`link[data-app="${id}"]`)) return res();
+    const l = document.createElement('link');
+    l.rel = 'stylesheet'; l.href = `../apps/${id}.css`; l.dataset.app = id;
+    l.onload = res; l.onerror = res;
+    document.head.append(l);
+  });
+}
+
+function focusWin(w) {
+  wins.forEach((o) => { if (o !== w) { o.el.classList.add('inactive'); o.inst?.onBlur?.(); } });
+  w.el.classList.remove('inactive'); w.el.style.zIndex = ++z; w.inst?.onFocus?.();
+}
+
+async function openApp(id, args = {}) {
+  const mod = (await import(`../apps/${id}.js`)).default;
+  if (mod.single) {
+    const ex = wins.find((w) => w.id === id);
+    if (ex) { focusWin(ex); ex.inst?.onArgs?.(args); return ex; }
+  }
+  await cssLoaded(id);
+  const [cw, ch] = mod.size || [640, 480];
+  const W = +qs.get('w') || cw, H = +qs.get('h') || ch;
+  const el = document.createElement('div');
+  el.className = 'hw';
+  const off = (spawn++ % 6) * 28;
+  el.style.left = Math.max(0, Math.round((innerWidth - W - 8) / 2) - 60 + off) + 'px';
+  el.style.top = Math.max(0, Math.round((innerHeight - H - 35) / 2) - 20 + off) + 'px';
+  el.style.width = (W + 8) + 'px'; el.style.height = (H + 35) + 'px';
+  el.innerHTML = `<div class="tb"><span class="ti"></span><span class="tt"></span><div class="caps"><button class="cap min" aria-label="Minimise"></button><button class="cap max" aria-label="Maximise"></button><button class="cap close" aria-label="Close"></button></div></div><div class="wb"><div class="app-root app-${id}"></div></div><div class="rz"></div>`;
+  desk.append(el);
+  el.querySelector('.ti').append(icon(mod.icon || id, 16));
+  const tt = el.querySelector('.tt'); tt.textContent = mod.title;
+  const root = el.querySelector('.app-root');
+  const w = { id, el, root, mod, inst: null, status: '' };
+  wins.push(w);
+  const ctx = {
+    args, isMobile: MOBILE, site: sitePromise,
+    openApp: (i, a) => openApp(i, a),
+    setTitle: (s) => { tt.textContent = s; w.title = s; },
+    close: () => closeWin(w),
+    setStatus: (s) => { w.status = s; },
+    icon, sound: (n) => { window.__kzLog.push({ sound: n }); },
+    shield: () => {},
+  };
+  w.ctx = ctx;
+  if (MOBILE || qs.get('max') === '1') el.classList.add('max');
+  el.querySelector('.cap.close').onclick = () => closeWin(w);
+  el.querySelector('.cap.max').onclick = () => { el.classList.toggle('max'); };
+  el.querySelector('.cap.min').onclick = () => { el.style.display = 'none'; setTimeout(() => (el.style.display = ''), 800); };
+  el.addEventListener('pointerdown', () => focusWin(w), true);
+  // drag
+  const tb = el.querySelector('.tb');
+  tb.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.cap') || el.classList.contains('max')) return;
+    const sx = e.clientX, sy = e.clientY, ox = el.offsetLeft, oy = el.offsetTop;
+    tb.setPointerCapture(e.pointerId);
+    const mv = (ev) => { el.style.left = ox + ev.clientX - sx + 'px'; el.style.top = Math.max(0, oy + ev.clientY - sy) + 'px'; };
+    const up = () => { tb.removeEventListener('pointermove', mv); tb.removeEventListener('pointerup', up); };
+    tb.addEventListener('pointermove', mv); tb.addEventListener('pointerup', up);
+  });
+  tb.addEventListener('dblclick', (e) => { if (!e.target.closest('.cap')) el.classList.toggle('max'); });
+  // resize
+  const rz = el.querySelector('.rz');
+  const [mw, mh] = mod.minSize || [200, 150];
+  rz.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    const sx = e.clientX, sy = e.clientY, ow = el.offsetWidth, oh = el.offsetHeight;
+    rz.setPointerCapture(e.pointerId);
+    const mv = (ev) => { el.style.width = Math.max(mw + 8, ow + ev.clientX - sx) + 'px'; el.style.height = Math.max(mh + 35, oh + ev.clientY - sy) + 'px'; };
+    const up = () => { rz.removeEventListener('pointermove', mv); rz.removeEventListener('pointerup', up); };
+    rz.addEventListener('pointermove', mv); rz.addEventListener('pointerup', up);
+  });
+  w.inst = mod.mount(root, ctx) || {};
+  new ResizeObserver(() => w.inst?.onResize?.(root.clientWidth, root.clientHeight)).observe(root);
+  focusWin(w);
+  log('opened', id, JSON.stringify(args));
+  return w;
+}
+function closeWin(w) {
+  try { w.inst?.unmount?.(); } catch (e) { console.error(e); }
+  w.el.remove(); wins.splice(wins.indexOf(w), 1);
+  log('closed', w.id);
+}
+
+window.__kz = { wins, openApp, closeWin, icon };
+let args = {};
+try { args = JSON.parse(qs.get('args') || '{}'); } catch (_) { /* */ }
+openApp(qs.get('id') || 'about', args).then(() => { window.__kzReady = true; }).catch((e) => window.__kzErr('open failed: ' + (e.stack || e)));
+</script>
+</body>
+</html>

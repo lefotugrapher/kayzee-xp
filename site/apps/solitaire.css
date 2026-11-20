@@ -1,0 +1,147 @@
+/* Solitaire: sunny grass felt + original cards. Every selector is scoped to .app-solitaire. */
+.app-solitaire {
+  display: flex; flex-direction: column; height: 100%; position: relative;
+  background: #ece9d8; font: 12px/1.35 Tahoma, Verdana, "Segoe UI", sans-serif; color: #111;
+  user-select: none; -webkit-user-select: none;
+}
+.app-solitaire .sl-menubar {
+  flex: none; height: 22px; display: flex; align-items: stretch; padding: 0 2px;
+  background: #ece9d8; border-bottom: 1px solid #d6d2bf; box-shadow: 0 1px 0 #fff; position: relative; z-index: 5000;
+}
+.app-solitaire .sl-menu { position: relative; }
+.app-solitaire .sl-mtitle { height: 100%; padding: 0 7px; border: 0; background: none; font: inherit; color: #111; }
+.app-solitaire .sl-mtitle:hover, .app-solitaire .sl-menu.open .sl-mtitle { background: #316ac5; color: #fff; }
+.app-solitaire .sl-drop {
+  display: none; position: absolute; left: 0; top: 100%; min-width: 168px; padding: 2px;
+  background: #fff; border: 1px solid #8d8d8d; box-shadow: 2px 3px 4px rgba(0,0,0,.28);
+}
+.app-solitaire .sl-menu.open .sl-drop { display: block; }
+.app-solitaire .sl-drop button {
+  display: flex; width: 100%; justify-content: space-between; gap: 16px; padding: 3px 10px 3px 22px;
+  border: 0; background: none; font: inherit; color: #111; text-align: left; position: relative;
+}
+.app-solitaire .sl-drop button span { color: #6b6b6b; }
+.app-solitaire .sl-drop button:hover:not(:disabled) { background: #316ac5; color: #fff; }
+.app-solitaire .sl-drop button:hover:not(:disabled) span { color: #dbe6ff; }
+.app-solitaire .sl-drop button:disabled { color: #a7a597; }
+.app-solitaire .sl-drop button.on.radio::before { content: ""; position: absolute; left: 8px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: currentColor; }
+.app-solitaire .sl-drop hr { border: 0; border-top: 1px solid #c5c2b2; margin: 3px 2px; }
+
+/* the felt: tiny grass blades + warm sun from the top-left */
+.app-solitaire .sl-board {
+  flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; touch-action: none;
+  background:
+    radial-gradient(110% 80% at 12% -5%, rgba(255,240,170,.5), rgba(255,240,170,0) 60%),
+    radial-gradient(140% 120% at 50% 40%, rgba(0,0,0,0) 55%, rgba(20,60,10,.35) 100%),
+    var(--sl-felt) repeat, #4caa3c;
+  background-size: auto, auto, 160px 160px, auto;
+  image-rendering: auto;
+}
+.app-solitaire .sl-slot, .app-solitaire .sl-card {
+  position: absolute; left: 0; top: 0; width: var(--cw, 80px); height: var(--ch, 114px);
+  border-radius: calc(var(--cw, 80px) * .075);
+}
+.app-solitaire .sl-slot {
+  border: 2px solid rgba(235,255,200,.42); background: rgba(20,70,10,.18);
+  box-shadow: inset 0 2px 6px rgba(0,40,0,.25); display: grid; place-items: center;
+}
+.app-solitaire .sl-slot-found .sl-ace { font: bold calc(var(--cw) * .36) "Trebuchet MS", Tahoma, sans-serif; color: rgba(235,255,200,.42); }
+.app-solitaire .sl-slot-stock { cursor: pointer; }
+.app-solitaire .sl-recycle {
+  width: 46%; aspect-ratio: 1; border-radius: 50%; border: calc(var(--cw) * .05) solid rgba(255,236,150,.75);
+  border-right-color: transparent; position: relative;
+}
+.app-solitaire .sl-recycle::after {
+  content: ""; position: absolute; right: -14%; top: 4%; border: calc(var(--cw) * .06) solid transparent;
+  border-left-color: rgba(255,236,150,.75); transform: rotate(-45deg);
+}
+.app-solitaire .sl-slot-stock.empty-done .sl-recycle { opacity: .35; }
+.app-solitaire .sl-slot-tab { opacity: .7; }
+
+/* cards */
+.app-solitaire .sl-card {
+  transition: transform .2s cubic-bezier(.25,.8,.3,1); will-change: transform; transform-origin: 50% 50%;
+  box-shadow: 0 1px 1px rgba(0,30,0,.35), 0 2px 4px rgba(0,40,0,.18);
+}
+.app-solitaire .sl-card * { pointer-events: none; }
+.app-solitaire .sl-card.sl-drag { box-shadow: 0 10px 18px rgba(0,30,0,.35), 0 2px 4px rgba(0,30,0,.25); }
+.app-solitaire .sl-face, .app-solitaire .sl-back { position: absolute; inset: 0; border-radius: inherit; }
+.app-solitaire .sl-face {
+  background: linear-gradient(160deg, #fffef8, #fbf6e6); border: 1px solid #b9b19a; display: none; overflow: hidden;
+}
+.app-solitaire .sl-card.up .sl-face { display: block; }
+.app-solitaire .sl-card.up .sl-back { display: none; }
+.app-solitaire .sl-card.red { color: #d23a2e; fill: #d23a2e; }
+.app-solitaire .sl-card.black { color: #1f2a36; fill: #1f2a36; }
+.app-solitaire .sl-corner {
+  position: absolute; display: flex; flex-direction: column; align-items: center; line-height: 1;
+  width: calc(var(--cw) * .22);
+}
+.app-solitaire .sl-corner.tl { left: calc(var(--cw) * .035); top: calc(var(--cw) * .05); }
+.app-solitaire .sl-corner.br { right: calc(var(--cw) * .035); bottom: calc(var(--cw) * .05); transform: rotate(180deg); }
+.app-solitaire .sl-corner b { font: 700 calc(var(--cw) * .21) "Trebuchet MS", Tahoma, Verdana, sans-serif; letter-spacing: -.04em; }
+.app-solitaire .sl-corner svg { width: calc(var(--cw) * .16); height: calc(var(--cw) * .16); margin-top: calc(var(--cw) * .015); }
+.app-solitaire .sl-mid { position: absolute; left: 20%; right: 20%; top: 9%; bottom: 9%; width: 60%; height: 82%; }
+.app-solitaire .sl-face.court .sl-mid { left: 22%; right: 22%; width: 56%; top: 6%; height: 88%; }
+.app-solitaire .sl-back {
+  background: var(--sl-back) center / cover no-repeat, #5aa8f3;
+  image-rendering: pixelated;
+  border: calc(var(--cw) * .055) solid #fffaf0; outline: 1px solid #b9b19a; outline-offset: -1px;
+  box-shadow: inset 0 0 0 1px rgba(0,40,90,.25);
+}
+.app-solitaire .sl-card.sl-fly { z-index: 900; }
+
+/* win: a grass strip slides up and cards tumble onto it */
+.app-solitaire .sl-lawn {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2900; pointer-events: none;
+  transform: translateY(100%); transition: transform .6s cubic-bezier(.2,.9,.3,1.1);
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 6px, rgba(0,0,0,0) 6px 13px),
+    linear-gradient(180deg, #9ee36a 0, #9ee36a 4px, #6cc243 4px, #4fae32 55%, #3d8f26 100%);
+  box-shadow: 0 -2px 0 #b6ee86 inset;
+}
+.app-solitaire .sl-lawn::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -6px; height: 7px;
+  background: linear-gradient(90deg, transparent 0 2px, #6cc243 2px 4px, transparent 4px 7px, #4fae32 7px 8px, transparent 8px 11px) repeat-x;
+  background-size: 11px 7px;
+  -webkit-mask: linear-gradient(0deg, #000 30%, transparent); mask: linear-gradient(0deg, #000 30%, transparent);
+}
+.app-solitaire .sl-lawn.in { transform: none; }
+.app-solitaire .sl-banner {
+  position: absolute; left: 50%; top: 30%; transform: translate(-50%, -50%); z-index: 4000;
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  background: #ece9d8; border: 3px solid #0b51d9; border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,40,0,.4); animation: kzsl-pop .35s cubic-bezier(.2,1.4,.4,1);
+}
+.app-solitaire .sl-banner img { width: 44px; height: 44px; image-rendering: pixelated; }
+.app-solitaire .sl-banner b { display: block; font: bold 18px "Trebuchet MS", Tahoma, sans-serif; color: #1d4fc4; }
+.app-solitaire .sl-banner span { color: #444; }
+@keyframes kzsl-pop { from { transform: translate(-50%, -50%) scale(.6); opacity: 0; } }
+
+.app-solitaire .sl-status {
+  flex: none; height: 22px; display: flex; align-items: center; gap: 0; padding: 0 2px;
+  background: #ece9d8; border-top: 1px solid #fff; box-shadow: 0 -1px 0 #d6d2bf;
+}
+.app-solitaire .sl-status > span { padding: 0 8px; height: 17px; line-height: 17px; box-shadow: inset 1px 1px 0 #a7a597, inset -1px -1px 0 #fff; white-space: nowrap; overflow: hidden; }
+.app-solitaire .sl-st-msg { flex: 1; }
+.app-solitaire .sl-st-score { width: 100px; }
+.app-solitaire .sl-st-time { width: 90px; }
+
+.app-solitaire .sl-modal { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(20,40,10,.18); z-index: 6000; }
+.app-solitaire .sl-modal[hidden] { display: none; }
+.app-solitaire .sl-dlg { width: min(320px, calc(100% - 24px)); background: #ece9d8; border: 3px solid #0b51d9; border-top: 0; border-radius: 6px 6px 2px 2px; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.app-solitaire .sl-dlg-t {
+  height: 24px; display: flex; align-items: center; padding: 0 8px; margin: 0 -3px; border-radius: 6px 6px 0 0;
+  color: #fff; font: bold 12px "Trebuchet MS", Tahoma, sans-serif; text-shadow: 1px 1px 0 #0b2a8a;
+  background: linear-gradient(180deg, #4aa0ff 0%, #1873f3 12%, #0a5be0 50%, #0a4cc2 100%);
+}
+.app-solitaire .sl-dlg-b { padding: 10px 12px 2px; }
+.app-solitaire .sl-dlg-b p { margin: 0 0 8px; }
+.app-solitaire .sl-dlg-b ul { margin: 0 0 6px; padding-left: 18px; }
+.app-solitaire .sl-dlg-f { display: flex; justify-content: flex-end; padding: 8px 12px 10px; }
+.app-solitaire .sl-btn {
+  min-width: 74px; height: 23px; padding: 0 10px; font: inherit; color: #111;
+  border: 1px solid #003c74; border-radius: 3px; background: linear-gradient(180deg, #fff 0%, #ecebe6 86%, #d6d0c5 100%);
+}
+.app-solitaire .sl-btn.default { box-shadow: inset 0 0 0 1px #8fb6f4; }
+.app-solitaire .sl-btn:hover { box-shadow: inset 0 0 0 2px #f9b33f; }

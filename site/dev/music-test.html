@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Music: dev harness</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../apps/music.css">
+<style>
+  /* harness only: show a real cursor, sit the window on a plain sky */
+  html, body { overflow: hidden; }
+  body, body * { cursor: auto !important; }
+  body { background: linear-gradient(180deg, #2f73d8 0%, #6fa8e8 55%, #57a83a 55.2%, #3f8a2a 100%); }
+  #stage { position: fixed; inset: 0; display: grid; place-items: center; }
+  .xpwin.test { width: auto; display: flex; flex-direction: column; box-shadow: 0 12px 40px rgba(0,10,40,.45); }
+  .xpwin.test.max { position: fixed; inset: 0; border-radius: 0; }
+  .xpwin.test.max .titlebar { border-radius: 0; }
+  .win-body { position: relative; display: flex; flex-direction: column; min-height: 0; flex: 1; }
+  .app-root { flex: 1; min-height: 0; }
+  .fake-status {
+    flex: none; height: 22px; display: flex; align-items: center; padding: 0 8px; font: 11px Tahoma, sans-serif; color: #000;
+    background: #ece9d8; border-top: 1px solid #d0ccbb; box-shadow: inset 0 1px 0 #fff;
+  }
+  #log { position: fixed; left: 8px; bottom: 8px; font: 11px Menlo, monospace; color: #fff; text-shadow: 0 1px 1px #000; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="xpwin test" id="win">
+    <div class="titlebar">
+      <span class="ticon" id="ticon"></span>
+      <span class="title" id="wtitle">My Music</span>
+      <div class="caps"><button class="cap min" aria-label="Minimise"></button><button class="cap max" aria-label="Maximise"></button><button class="cap close" aria-label="Close" id="closebtn"></button></div>
+    </div>
+    <div class="win-body">
+      <div class="app-root" id="root"></div>
+      <div class="fake-status" id="status"></div>
+    </div>
+  </div>
+</div>
+<div id="log"></div>
+<script type="module">
+  import * as S from '../sprites.js';
+  const q = new URLSearchParams(location.search);
+  // ?fail=api -> broken iFrame API URL (exercise the plain-embed fallback)
+  if (q.get('fail') === 'api') window.__KZ_SPOTIFY_API_URL = '/dev/does-not-exist.js';
+  // ?fail=list -> no track list from either source
+  if (q.get('fail') === 'list') {
+    const of = window.fetch.bind(window);
+    window.fetch = (u, o) => (/spotify|playlist-snapshot/.test(String(u)) ? Promise.resolve(new Response('nope', { status: 500 })) : of(u, o));
+  }
+  window.__errors = [];
+  window.addEventListener('error', (e) => window.__errors.push(String(e.message)));
+  window.addEventListener('unhandledrejection', (e) => window.__errors.push('rejection: ' + (e.reason && e.reason.message || e.reason)));
+
+  const LIB = {
+    folder: S.buildFolder(), projects: S.buildFolder(), music: S.buildCD(), media: S.buildCD(), resume: S.buildDoc(), notepad: S.buildDoc(),
+    about: S.buildMonitor(), browser: S.buildMonitor(), contact: S.buildEnvelope(), games: S.buildJoystick(), recycle: S.buildBin(),
+    sun: S.buildSun(), speaker: S.buildSpeaker(), net: S.buildNet(),
+  };
+  const iconCache = new Map();
+  function icon(key, px = 16) {
+    const vox = LIB[key] || LIB.folder;
+    const scale = Math.max(1, Math.round(px / 16 * 2));
+    const c = S.sprite2D(vox, scale, { shadow: px <= 24, bevel: scale >= 3 });
+    c.style.width = px + 'px';
+    return c;
+  }
+  document.getElementById('ticon').appendChild(icon('music', 16));
+
+  const mobile = q.has('mobile');
+  const max = q.has('max') || mobile;
+  const { default: app } = await import('../apps/music.js');
+  const [w, h] = [Number(q.get('w')) || app.size[0], Number(q.get('h')) || app.size[1]];
+  const win = document.getElementById('win');
+  const root = document.getElementById('root');
+  root.className = 'app-root app-music';
+  if (max) win.classList.add('max');
+  else { root.style.width = w + 'px'; root.style.height = h + 'px'; root.style.flex = 'none'; }
+
+  const ctx = {
+    args: {},
+    openApp: (id, args) => console.log('openApp', id, args),
+    setTitle: (s) => { document.getElementById('wtitle').textContent = s; },
+    close: () => { inst && inst.unmount && inst.unmount(); win.remove(); },
+    setStatus: (s) => { document.getElementById('status').textContent = s; },
+    site: fetch('/data/site.json').then((r) => r.json()),
+    icon,
+    sound: () => {},
+    isMobile: mobile,
+    shield: () => {},
+  };
+  document.getElementById('closebtn').onclick = () => ctx.close();
+  const inst = app.mount(root, ctx);
+  window.__app = { inst, root, ctx };
+  addEventListener('resize', () => inst && inst.onResize && inst.onResize(root.clientWidth, root.clientHeight));
+  window.__kzReady = true;
+</script>
+</body>
+</html>

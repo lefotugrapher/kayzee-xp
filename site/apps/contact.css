@@ -1,0 +1,26 @@
+/* Mail / Contact Me (apps-owned). Scoped under .app-contact */
+.app-contact .ct-form { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 5px; padding: 8px 8px 8px 6px; margin: 0; }
+.app-contact .ct-row { display: flex; align-items: center; gap: 6px; flex: none; }
+.app-contact .ct-label { width: 52px; flex: none; text-align: right; font: 11px Tahoma, Verdana, sans-serif; color: #000; }
+.app-contact .ct-row .xp-input { flex: 1; height: 23px; padding: 3px 6px; font-size: 12px; }
+.app-contact .ct-to { display: flex; align-items: center; background: #f4f3ec; border-color: #a5b5c8; padding: 1px 4px !important; }
+.app-contact .ct-chip {
+  display: inline-flex; align-items: center; height: 17px; padding: 0 7px; border-radius: 2px;
+  font: 12px Tahoma, Verdana, sans-serif; color: #000; background: linear-gradient(180deg, #f2f6ff, #dde7fb); border: 1px solid #b8c9ee;
+}
+.app-contact .ct-body { flex: 1; min-height: 60px; display: flex; margin-left: 4px; }
+.app-contact .ct-msg { flex: 1; width: 100%; min-height: 0; resize: none; font: 12px/1.5 Tahoma, Verdana, sans-serif; padding: 6px 8px; }
+.app-contact .ct-hp { position: absolute !important; left: -10000px !important; top: auto; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.app-contact.ct-sending .ct-form { opacity: .7; pointer-events: none; }
+.app-contact.ct-sending .kx-status-part.flex::before {
+  content: ""; display: inline-block; width: 60px; height: 9px; margin-right: 8px; vertical-align: -1px;
+  border: 1px solid #8a9bb5; background: repeating-linear-gradient(90deg, #3bb33b 0 7px, transparent 7px 9px) #fff;
+  background-size: 18px 100%; animation: ctbar 0.9s linear infinite;
+}
+@keyframes ctbar { to { background-position: 18px 0; } }
+.app-contact .kx-tool[title="LinkedIn profile"] { margin-left: 0; }
+.app-contact { container-type: inline-size; container-name: kxcontact; }
+@container kxcontact (max-width: 470px) {
+  .app-contact .kx-tool .kx-tool-label { display: none; }
+  .app-contact .ct-label { width: 46px; }
+}

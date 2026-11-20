@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Kshitiz Mittal - CV</title>
+<link rel="stylesheet" href="/xp.css"><link rel="stylesheet" href="/apps/resume.css">
+<style>@page{size:A4;margin:0}html,body{margin:0;background:#fff}</style></head>
+<body><div class="app-resume rs-print" id="host"></div>
+<script type="module">
+  // builds the same pages the Resume window prints, so headless Chrome can save them as the downloadable PDF
+  import { buildPages } from '/apps/resume.js';
+  const site = await fetch('/api/site').then((r) => r.json()).catch(() => fetch('/data/site.json').then((r) => r.json()));
+  if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  const pages = buildPages(document.getElementById('host'), site.settings || {});
+  document.title = 'pages:' + pages.length;
+  window.__cvReady = true;
+</script></body></html>

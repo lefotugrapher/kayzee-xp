@@ -1,0 +1,82 @@
+/* Guestbook (backend-owned). Scoped under .app-guestbook */
+.app-guestbook { container-type: inline-size; container-name: kxguestbook; }
+
+/* ---- the book: ruled paper that scrolls with its lines */
+.app-guestbook .gb-book {
+  --gb-rule: 26px;
+  flex: 1; min-height: 96px; overflow-y: auto; overflow-x: hidden; margin: 6px 6px 0;
+  border: 1px solid #7f9db9; outline: none;
+  padding: 0 16px var(--gb-rule) 50px;
+  background:
+    linear-gradient(90deg, transparent 37px, #e9a3a0 37px, #e9a3a0 38px, transparent 38px),
+    repeating-linear-gradient(180deg, transparent 0, transparent calc(var(--gb-rule) - 1px), #c9d9ee calc(var(--gb-rule) - 1px), #c9d9ee var(--gb-rule)),
+    #fffdf2;
+  background-attachment: local;
+  -webkit-user-select: text; user-select: text;
+}
+.app-guestbook .gb-book:focus-visible { border-color: #3c7fb1; }
+.app-guestbook .gb-head {
+  display: flex; align-items: center; gap: 10px; height: calc(var(--gb-rule) * 2);
+  margin: 0 -16px 0 -50px; padding: 0 16px 0 50px; border-bottom: 1px solid #c9d9ee;
+  background: linear-gradient(90deg, transparent 37px, #e9a3a0 37px, #e9a3a0 38px, transparent 38px), #fffdf2;
+}
+.app-guestbook .gb-head-ico { flex: none; width: 32px; height: 32px; display: grid; place-items: center; }
+.app-guestbook .gb-head-ico:empty { display: none; }
+.app-guestbook .gb-head-ico > * { width: 32px; height: auto; image-rendering: pixelated; }
+.app-guestbook .gb-title { margin: 0; font: bold 17px/22px "Trebuchet MS", Tahoma, sans-serif; color: #1c4ab8; }
+.app-guestbook .gb-lead { margin: 0; font: 11px/15px Tahoma, Verdana, sans-serif; color: #5b5a52; }
+
+.app-guestbook .gb-list { list-style: none; margin: 0; padding: 0; }
+.app-guestbook .gb-entry { margin: 0 0 var(--gb-rule); }
+.app-guestbook .gb-msg, .app-guestbook .gb-sig, .app-guestbook .gb-note.empty {
+  font-family: "Segoe Print", "Bradley Hand", "Chalkboard SE", "Comic Sans MS", "Marker Felt", cursive;
+}
+.app-guestbook .gb-msg {
+  margin: 0; font-size: 15px; line-height: var(--gb-rule); color: #1b2a55;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.app-guestbook .gb-sig { font-size: 13px; line-height: var(--gb-rule); color: #33457a; overflow-wrap: anywhere; text-align: right; }
+.app-guestbook .gb-who { font-weight: bold; }
+.app-guestbook .gb-date { margin-left: 8px; font: 10.5px/var(--gb-rule) Tahoma, Verdana, sans-serif; color: #7a7867; white-space: nowrap; }
+.app-guestbook .gb-entry.pending .gb-msg, .app-guestbook .gb-entry.pending .gb-sig { opacity: .72; }
+.app-guestbook .gb-wait {
+  float: right; clear: both; height: 18px; margin: 4px 0; padding: 0 8px; border: 1px solid #d8c76a; border-radius: 2px;
+  background: #fff8c4; color: #6a5a00; font: 10.5px/16px Tahoma, Verdana, sans-serif; white-space: nowrap;
+  box-shadow: 1px 1px 0 rgba(0,0,0,.08); transform: rotate(-1deg);
+}
+.app-guestbook .gb-entry::after { content: ""; display: block; clear: both; }
+.app-guestbook .gb-note { font: 11px/var(--gb-rule) Tahoma, Verdana, sans-serif; color: #5b5a52; }
+.app-guestbook .gb-note:empty { display: none; }
+.app-guestbook .gb-note.empty { padding-top: var(--gb-rule); font-size: 17px; color: #6b7aa8; text-align: center; }
+.app-guestbook .gb-note.warn { color: #a2400e; }
+
+/* ---- the form */
+.app-guestbook .gb-form { flex: none; margin: 0; padding: 6px 6px 7px; }
+.app-guestbook .gb-form .xp-groupbox { min-width: 0; padding: 4px 10px 8px; }
+.app-guestbook .gb-row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 0 10px; }
+.app-guestbook .gb-field { display: block; margin-top: 5px; font: 11px Tahoma, Verdana, sans-serif; color: #000; min-width: 0; }
+.app-guestbook .gb-field > .xp-input, .app-guestbook .gb-field > .xp-textarea { display: block; width: 100%; margin-top: 2px; -webkit-user-select: text; user-select: text; }
+.app-guestbook .gb-field > .xp-textarea { height: 44px; line-height: 1.4; }
+.app-guestbook .gb-msg-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.app-guestbook .gb-count { color: #7a7867; font-size: 10.5px; font-variant-numeric: tabular-nums; }
+.app-guestbook .gb-count.full { color: #b0250d; font-weight: bold; }
+.app-guestbook .gb-hp { position: absolute !important; left: -10000px !important; top: auto; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.app-guestbook .gb-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 7px; }
+.app-guestbook .gb-err { flex: 1; min-width: 0; margin: 0; color: #b0250d; font: 11px/1.3 Tahoma, Verdana, sans-serif; }
+.app-guestbook .gb-actions .xp-btn { flex: none; }
+.app-guestbook .gb-actions .xp-btn:disabled { cursor: default; }
+
+/* phones: 16px fields so the page does not zoom on focus, bigger tap targets */
+.app-guestbook.gb-mobile .xp-input, .app-guestbook.gb-mobile .xp-textarea { font-size: 16px; }
+.app-guestbook.gb-mobile .xp-input { height: 30px; }
+.app-guestbook.gb-mobile .gb-field > .xp-textarea { height: 56px; }
+.app-guestbook.gb-mobile .gb-actions .xp-btn { height: 32px; }
+
+@container kxguestbook (max-width: 400px) {
+  .app-guestbook .gb-book { padding-left: 40px; padding-right: 10px; background-position: -10px 0, 0 0, 0 0; }
+  .app-guestbook .gb-head { margin: 0 -10px 0 -40px; padding: 0 10px 0 40px; background-position: -10px 0, 0 0; }
+  .app-guestbook .gb-row2 { grid-template-columns: minmax(0, 1fr); }
+  .app-guestbook .gb-actions { flex-wrap: wrap; }
+  .app-guestbook .gb-err { flex-basis: 100%; }
+  .app-guestbook .gb-actions .xp-btn { flex: 1; }
+}

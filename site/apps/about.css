@@ -1,0 +1,78 @@
+/* About Me (apps-owned). Scoped under .app-about */
+.app-about { container-type: inline-size; container-name: kxabout; }
+.app-about .ab-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; background: #fff; }
+
+.app-about .ab-head {
+  position: relative; display: flex; align-items: center; gap: 18px; padding: 18px 22px 20px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.22), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, #3b7ff0 0%, #2b65dc 55%, #2457c9 100%);
+  color: #fff;
+}
+.app-about .ab-head::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg, rgba(248,162,74,0) 0%, #f8a24a 25%, #ffd9a6 50%, #f8a24a 75%, rgba(248,162,74,0) 100%);
+}
+.app-about .ab-avatar {
+  flex: none; width: 104px; height: 104px; padding: 3px; border-radius: 6px;
+  background: linear-gradient(180deg, #fff, #dfe8fb); box-shadow: 0 0 0 1px #1a4cb5, 0 3px 8px rgba(0,10,50,.35);
+}
+.app-about .ab-avatar canvas { display: block; border-radius: 3px; image-rendering: pixelated; }
+.app-about .ab-id { min-width: 0; }
+.app-about .ab-nameline { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+.app-about .ab-name {
+  margin: 0; font: bold 26px/1.1 "Trebuchet MS", Tahoma, sans-serif; letter-spacing: .2px;
+  text-shadow: 1px 1px 0 #0b2a8a, 0 0 6px rgba(0,20,80,.35);
+}
+.app-about .ab-nick { font: italic 15px "Trebuchet MS", Tahoma, sans-serif; color: #d8e6ff; }
+.app-about .ab-role { margin: 7px 0 0; font: bold 12px/1.4 Tahoma, Verdana, sans-serif; color: #fff; }
+.app-about .ab-loc { margin: 5px 0 0; display: flex; align-items: center; gap: 6px; font: 11px Tahoma, Verdana, sans-serif; color: #dbe7ff; }
+.app-about .ab-pin { width: 9px; height: 12px; flex: none; background:
+  radial-gradient(circle at 50% 36%, #fff 0 1.6px, transparent 2px),
+  radial-gradient(circle at 50% 36%, #ff7a52 0 4.4px, transparent 4.6px);
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }
+
+.app-about .ab-body { padding: 6px 22px 18px; }
+.app-about .ab-sec { margin-top: 14px; }
+.app-about .ab-sec h2 {
+  margin: 0 0 8px; padding-bottom: 3px; font: bold 12px Tahoma, Verdana, sans-serif; color: #1a4fb8;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, #6f9ae8 0%, #c5d5f3 55%, rgba(255,255,255,0) 100%) 1;
+}
+.app-about .ab-bio { margin: 0; font: 12.5px/1.6 Tahoma, Verdana, sans-serif; color: #1f1f1f; -webkit-user-select: text; user-select: text; max-width: 62em; }
+
+.app-about .ab-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 9px; }
+.app-about .ab-card {
+  display: flex; gap: 11px; align-items: flex-start; padding: 10px 12px 11px 10px;
+  background: linear-gradient(180deg, #fbfcff 0%, #eef3fd 100%); border: 1px solid #c8d5ef; border-radius: 4px;
+  box-shadow: inset 0 1px 0 #fff;
+}
+.app-about .ab-badge { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 5px;
+  background: linear-gradient(180deg, #fff, #e3ebfa); box-shadow: 0 0 0 1px #c3d1ee; }
+.app-about .ab-badge svg { display: block; filter: drop-shadow(0 1px 0 rgba(0,0,40,.18)); }
+.app-about .ab-card h3 { margin: 1px 0 3px; font: bold 12px/1.3 Tahoma, Verdana, sans-serif; color: #0b3c9e; }
+.app-about .ab-card p { margin: 0; font: 11.5px/1.45 Tahoma, Verdana, sans-serif; color: #333; }
+
+.app-about .ab-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.app-about .ab-chip {
+  padding: 3px 9px 4px; font: 11px Tahoma, Verdana, sans-serif; color: #173f8f; white-space: nowrap;
+  border: 1px solid #a9bfe9; border-radius: 10px; background: linear-gradient(180deg, #fff 0%, #e6eefc 100%);
+}
+
+.app-about .ab-actions {
+  flex: none; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; padding: 9px 12px;
+  background: #ece9d8; border-top: 1px solid #c9c5b2; box-shadow: inset 0 1px 0 #fff;
+}
+.app-about .ab-actions .xp-btn { min-width: 0; padding: 0 11px; }
+.app-about .ab-actions .xp-btn svg { display: block; }
+
+@container kxabout (max-width: 520px) {
+  .app-about .ab-head { padding: 14px; gap: 12px; }
+  .app-about .ab-avatar { width: 80px; height: 80px; }
+  .app-about .ab-avatar canvas { width: 74px !important; height: 74px !important; }
+  .app-about .ab-name { font-size: 21px; }
+  .app-about .ab-body { padding: 4px 14px 14px; }
+  .app-about .ab-cards { grid-template-columns: 1fr; }
+  .app-about .ab-actions { justify-content: stretch; }
+  .app-about .ab-actions .xp-btn { flex: 1 1 45%; }
+}

@@ -1,0 +1,125 @@
+{
+ "settings": {
+  "displayName": "Kshitiz Mittal",
+  "nickname": "Kayzee",
+  "role": "PR & Communications · Content & Social Media · Brand Storytelling",
+  "location": "Dundalk, Co. Louth, Ireland",
+  "about": "PR and content graduate (BA Hons Digital Marketing and Public Relations, DkIT) and Vice President of DkIT Students' Union. Co-founded two local brands, doubling bookings at Sharpz Studio and growing Canopy Coffee's average daily sales 48% in its second month. Writes press releases and campaign copy, shoots and edits short-form and drone video, and presented research to a national panel in Dublin.",
+  "contactEmail": "mittalkshitiz13@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/lefotugrapher",
+  "resumePdfUrl": "",
+  "spotifyPlaylist": "https://open.spotify.com/playlist/6rmbRweMbmm9Ne6DOQiwm6"
+ },
+ "projects": [
+  {
+   "id": "jp-morgan-x-dkit",
+   "title": "JP Morgan x DkIT Business Society",
+   "category": "Events",
+   "year": "2026",
+   "description": "Event photography for the JP Morgan x DkIT Business Society session.",
+   "url": "https://www.playbook.com/s/kayzeem/jp-morgan-business-society",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/jp-morgan-x-dkit.jpg",
+   "visible": true
+  },
+  {
+   "id": "betmaster",
+   "title": "betmaster portfolio",
+   "category": "Content",
+   "year": "2026",
+   "description": "Content portfolio for betmaster.",
+   "url": "https://www.playbook.com/s/kayzeem/betmaster-portfolio",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/betmaster.jpg",
+   "visible": true
+  },
+  {
+   "id": "ajay-and-gunjan",
+   "title": "Ajay and Gunjan",
+   "category": "Photography",
+   "year": "2026",
+   "description": "Couple shoot.",
+   "url": "https://www.playbook.com/s/kayzeem/ajay-and-gunjan",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/ajay-and-gunjan.jpg",
+   "visible": true
+  },
+  {
+   "id": "canopy",
+   "title": "Canopy Coffee",
+   "category": "Brands",
+   "year": "2026",
+   "description": "Brand content for Canopy Coffee, the Newry coffee trailer I co-founded.",
+   "url": "https://www.playbook.com/s/kayzeem/canopy",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/canopy.jpg",
+   "visible": true
+  },
+  {
+   "id": "student-training-and-mental-health-fair",
+   "title": "Student Training and Mental Health Fair",
+   "category": "Events",
+   "year": "",
+   "description": "Photos from the Student Training and Mental Health Fair.",
+   "url": "https://www.playbook.com/s/kayzeem/student-training-and-mental-health-fair",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/student-training-and-mental-health-fair.jpg",
+   "visible": true
+  },
+  {
+   "id": "dkit10k",
+   "title": "DkIT 10K",
+   "category": "Events",
+   "year": "",
+   "description": "Race-day photos and video from the DkIT 10K.",
+   "url": "https://www.playbook.com/s/kayzeem/dkit10k",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/dkit10k.jpg",
+   "visible": true
+  },
+  {
+   "id": "park-street-bistro",
+   "title": "Park Street Bistro",
+   "category": "Brands",
+   "year": "",
+   "description": "Food and venue photography for Park Street Bistro.",
+   "url": "https://www.playbook.com/s/kayzeem/park-street-bistro",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/park-street-bistro.jpg",
+   "visible": true
+  },
+  {
+   "id": "much-grange-open-day",
+   "title": "Much Grange Open Day",
+   "category": "Events",
+   "year": "",
+   "description": "Photos from the open day at Much Grange.",
+   "url": "https://www.playbook.com/s/kayzeem/much-grange-openday",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/much-grange-open-day.jpg",
+   "visible": true
+  },
+  {
+   "id": "russells-saloon-event",
+   "title": "Russell's Saloon Event",
+   "category": "Events",
+   "year": "",
+   "description": "Event photography at Russell's Saloon.",
+   "url": "https://www.playbook.com/s/kayzeem/russell-s-saloon-event",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/russells-saloon-event.jpg",
+   "visible": true
+  },
+  {
+   "id": "belfast-barber-conference",
+   "title": "Belfast Barber Conference",
+   "category": "Events",
+   "year": "",
+   "description": "Photo and video from a barber conference in Belfast.",
+   "url": "https://www.playbook.com/s/kayzeem/belfast-barber-conference",
+   "type": "page",
+   "cover": "https://kayzee-xp.vercel.app/data/covers/belfast-barber-conference.jpg",
+   "visible": true
+  }
+ ]
+}

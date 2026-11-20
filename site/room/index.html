@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kayzee XP: Kshitiz Mittal's room</title>
+<meta name="description" content="Kshitiz Mittal (Kayzee): PR & Communications, Content & Social Media, Brand Storytelling. Step into the room and power on the portfolio.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kshitiz Mittal (Kayzee) · PR, Content &amp; Brand Storytelling">
+<meta property="og:description" content="Step into the room and power on the portfolio: résumé, campaigns, photography and a way to say hello.">
+<meta property="og:image" content="https://kayzee-room.vercel.app/room/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://kayzee-room.vercel.app/room">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kshitiz Mittal (Kayzee) · Portfolio">
+<meta name="twitter:description" content="PR &amp; communications · Content &amp; social media · Brand storytelling. Step into the room and power on the portfolio.">
+<meta name="twitter:image" content="https://kayzee-room.vercel.app/room/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap">
+<link rel="preload" href="/room/poster.jpg" as="image" fetchpriority="high">
+<link rel="preload" href="/room/room.glb" as="fetch" crossorigin>
+<link rel="preload" href="/room/projA.jpg" as="image" crossorigin>
+<link rel="preload" href="/room/room.json" as="fetch" crossorigin>
+<link rel="canonical" href="https://kayzee-room.vercel.app/room">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js">
+<style>
+  html, body { margin: 0; height: 100%; background: #2a1d14; overflow: hidden; font-family: Tahoma, Verdana, sans-serif; }
+  canvas { display: block; position: fixed; inset: 0; width: 100vw; height: 100vh; }
+  /* instant still of the room while the 3D scene loads */
+  #poster { position: fixed; inset: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: 2; transition: opacity 1s ease; filter: saturate(1.05); }
+  #poster.gone { opacity: 0; pointer-events: none; }
+  #loadbar { position: fixed; left: 50%; bottom: 9vh; transform: translateX(-50%); z-index: 3; width: 180px; height: 14px; border: 2px solid #c9c2b8;
+             border-radius: 5px; background: rgba(0,0,0,.55); overflow: hidden; transition: opacity .6s; }
+  #loadbar i { position: absolute; top: 2px; bottom: 2px; left: 2px; width: 0; border-radius: 2px; background: linear-gradient(#a9bdff, #2a52e8 55%, #5b7dff); transition: width .25s; }
+  #loadbar.gone { opacity: 0; }
+  #hint { position: fixed; left: 50%; bottom: 7vh; transform: translateX(-50%); color: #fff6e6; font-size: 15px; letter-spacing: .04em; z-index: 4;
+          text-shadow: 0 1px 6px #000; opacity: 0; transition: opacity .8s; pointer-events: none; white-space: nowrap; }
+  #hint.on { opacity: .92; animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .55; } }
+  .btn { position: fixed; z-index: 6; color: #fff6e6; font-size: 12px; text-decoration: none; cursor: pointer; font-family: inherit;
+         border: 1px solid rgba(255,246,230,.45); padding: 6px 11px; border-radius: 3px; background: rgba(20,12,6,.55); opacity: .8; }
+  .btn:hover { opacity: 1; }
+  #skip { right: 18px; bottom: 16px; }
+  #back { left: 18px; top: 16px; display: none; }
+  body.zoomed #back { display: block; }
+  #full { right: 18px; top: 16px; display: none; }
+  /* phones: a friendly heads-up that the big screen is the real thing */
+  #note { position: fixed; left: 50%; top: 14px; transform: translateX(-50%); z-index: 6; display: none; align-items: center; gap: 8px; width: max-content; max-width: 92vw; box-sizing: border-box;
+          color: #fff6e6; font-size: 12.5px; line-height: 1.3; padding: 8px 10px 8px 12px; border-radius: 4px; border: 1px solid rgba(255,246,230,.4); background: rgba(20,12,6,.72); }
+  #note button { all: unset; cursor: pointer; padding: 2px 6px; opacity: .75; font-size: 14px; }
+  body.phone #note { display: flex; }
+  body.zoomed #note, body.note-off #note { display: none; }
+  body.zoomed.small #full { display: block; }
+  #rot { position: fixed; left: 0; right: 0; bottom: 5vh; text-align: center; color: #fff6e6; font-size: 12px; opacity: .7; z-index: 6; display: none; text-shadow: 0 1px 4px #000; pointer-events: none; }
+  @media (orientation: portrait) { body.zoomed.small #rot { display: block; } }
+  body.small #crt { border-radius: 8px / 7px; }
+  body.zoomed #skip, body.zoomed #hint { display: none; }
+  /* the live site, shown exactly over the CRT glass once the camera has pushed in */
+  #crt { position: fixed; z-index: 5; overflow: hidden; border-radius: 14px / 12px; opacity: 0; pointer-events: none; transition: opacity .12s ease;   /* leaves fast, so it never hangs in the air while the camera pulls back */
+         box-shadow: 0 0 0 2px #0a0b0b, 0 0 40px rgba(120,170,255,.18); background: #000; }
+  #crt.on { opacity: 1; pointer-events: auto; transition: opacity .5s ease; }
+  #crt iframe { border: 0; width: 100%; height: 100%; display: block; background: #000; }
+  #crt .glass { position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.07) 3px),
+                radial-gradient(ellipse at 50% 45%, rgba(255,255,255,.05) 0, rgba(0,0,0,0) 55%, rgba(0,0,0,.35) 100%);
+    box-shadow: inset 0 0 60px rgba(0,0,0,.55); }
+  /* hover label, small messages */
+  #tip { position: fixed; z-index: 6; pointer-events: none; color: #fff6e6; font-size: 12px; padding: 4px 8px; border-radius: 3px; background: rgba(20,12,6,.82);
+         border: 1px solid rgba(255,246,230,.35); opacity: 0; transition: opacity .15s; white-space: nowrap; transform: translateX(0); }
+  #tip.on { opacity: 1; }
+  #eggs { position: fixed; left: 18px; bottom: 54px; z-index: 6; color: #fff6e6; font-size: 11.5px; opacity: 0; transition: opacity .6s; pointer-events: none; text-shadow: 0 1px 4px #000; letter-spacing: .02em; }
+  #eggs.on { opacity: .7; }
+  body.zoomed #eggs { display: none; }
+  #toast { position: fixed; left: 50%; top: 18vh; transform: translateX(-50%); z-index: 8; color: #fff6e6; font-size: 14px; padding: 9px 14px; border-radius: 4px;
+           background: rgba(20,12,6,.86); border: 1px solid rgba(255,246,230,.4); opacity: 0; transition: opacity .3s; pointer-events: none; }
+  #toast.on { opacity: 1; }
+  /* fast lane button + panel */
+  #fast { left: 18px; bottom: 16px; background: #fff6e6; color: #2a1d14; border-color: #fff6e6; font-weight: bold; opacity: .95; }
+  #fast:hover { opacity: 1; background: #fff; }
+  body.zoomed #fast { left: auto; right: 18px; bottom: auto; top: 16px; }
+  body.zoomed.small #fast { top: 52px; }
+  .veil { position: fixed; inset: 0; z-index: 9; display: none; align-items: center; justify-content: center; background: rgba(12,7,4,.72); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); padding: 16px; box-sizing: border-box; }
+  .veil.on { display: flex; }
+  .x { position: absolute; top: 10px; right: 12px; all: unset; cursor: pointer; position: absolute; top: 8px; right: 10px; font-size: 18px; padding: 6px 10px; color: inherit; opacity: .7; }
+  .x:hover { opacity: 1; }
+  #lane-card { position: relative; width: min(640px, 100%); max-height: 100%; overflow: auto; box-sizing: border-box; padding: 26px 28px 24px; border-radius: 8px;
+               background: #fbf6ec; color: #2a1d14; box-shadow: 0 20px 70px rgba(0,0,0,.6); font-family: Tahoma, Verdana, sans-serif; }
+  #lane-card h1 { margin: 0 34px 2px 0; font-size: 26px; letter-spacing: -.01em; }
+  #lane-card .role { margin: 0 0 12px; font-size: 13px; color: #8a4a12; font-weight: bold; }
+  #lane-card .about { margin: 0 0 16px; font-size: 14px; line-height: 1.5; }
+  #lane-card h2 { margin: 20px 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #7a6a58; }
+  #lane-card .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  #lane-card .go { all: unset; cursor: pointer; box-sizing: border-box; font-size: 13px; padding: 9px 14px; border-radius: 4px; border: 1px solid #2a1d14; color: #2a1d14; text-align: center; }
+  #lane-card .go:hover { background: #2a1d14; color: #fbf6ec; }
+  #lane-card .go.primary { background: #2a52e8; border-color: #2a52e8; color: #fff; font-weight: bold; }
+  #lane-card .go.primary:hover { background: #1d3fc0; }
+  #lane-card .go.wide { display: block; width: 100%; margin-top: 14px; }
+  #lane-card .go:focus-visible, #lane-card .card:focus-visible { outline: 2px solid #2a52e8; outline-offset: 2px; }
+  #lane-card .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  #lane-card .card { all: unset; cursor: pointer; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; padding: 11px 12px; border-radius: 6px; background: #fff; border: 1px solid #e2d6c2; }
+  #lane-card .card:hover { border-color: #2a52e8; }
+  #lane-card .card .pic { width: 100%; height: 96px; object-fit: cover; border-radius: 4px; margin-bottom: 4px; background: #e2d6c2; }
+  #lane-card .card .cat { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: #8a4a12; }
+  #lane-card .card strong { font-size: 14px; line-height: 1.25; }
+  #lane-card .card .desc { font-size: 12px; line-height: 1.4; color: #5a4a3a; flex: 1; }
+  #lane-card .card .open { font-size: 11.5px; color: #2a52e8; margin-top: 4px; }
+  @media (max-width: 560px) { #lane-card { padding: 22px 18px 18px; } #lane-card .cards { grid-template-columns: 1fr; } #lane-card h1 { font-size: 22px; } }
+  /* lightbox for the work on the wall */
+  #lb { flex-direction: column; gap: 10px; color: #fff6e6; }
+  #lb-img { max-width: min(92vw, 720px); max-height: 72vh; border-radius: 3px; box-shadow: 0 18px 60px rgba(0,0,0,.7); background: #fff; }
+  #lb-t { font-size: 17px; font-weight: bold; text-align: center; }
+  #lb-d { font-size: 12.5px; opacity: .8; text-align: center; margin-top: 2px; }
+  #lb .nav { display: flex; gap: 8px; align-items: center; }
+  #lb .btn { position: static; }
+  #fade { position: fixed; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 7; transition: opacity .45s ease; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+  <img id="poster" src="/room/poster.jpg" alt="Kshitiz Mittal's desk: a 90s computer in a sunlit room">
+  <div id="loadbar"><i></i></div>
+  <div id="hint">Click the computer to power on</div>
+  <button id="skip" class="btn">Skip to portfolio ›</button>
+  <button id="back" class="btn">‹ Back to room</button>
+  <button id="full" class="btn">Full screen ⤢</button>
+  <button id="fast" class="btn">In a hurry? Résumé + top work</button>
+  <div id="eggs"></div>
+  <div id="tip"></div>
+  <div id="toast" role="status"></div>
+  <div id="lane" class="veil" role="dialog" aria-modal="true" aria-label="Résumé and top work">
+    <div id="lane-card"><button id="lane-x" class="x" aria-label="Close">✕</button><div id="lane-body"><p>Loading…</p></div></div>
+  </div>
+  <div id="lb" class="veil" role="dialog" aria-modal="true" aria-label="Artwork">
+    <button id="lb-x" class="x" aria-label="Close">✕</button>
+    <img id="lb-img" alt="">
+    <div><div id="lb-t"></div><div id="lb-d"></div></div>
+    <div class="nav"><button id="lb-prev" class="btn">‹ Previous</button><button id="lb-more" class="btn">More work on the computer ›</button><button id="lb-next" class="btn">Next ›</button></div>
+  </div>
+  <div id="rot">Turn your phone sideways for a bigger screen.<br>Best experienced on a laptop or desktop.</div>
+  <div id="note"><span>💻 Best experienced on a laptop or desktop. You're seeing the pocket version.</span><button id="note-x" aria-label="Dismiss">✕</button></div>
+  <div id="crt"><div class="glass"></div></div>
+  <div id="fade"></div>
+  <noscript><p style="color:#fff">Kshitiz Mittal: PR &amp; Communications · Content &amp; Social Media. <a href="/" style="color:#9cf">Open the portfolio</a></p></noscript>
+  <script type="module" src="/room/room.js"></script>
+</body>
+</html>

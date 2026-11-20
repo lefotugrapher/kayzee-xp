@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kshitiz Mittal (Kayzee) · PR, Content &amp; Brand Storytelling · Kayzee XP</title>
+<meta name="description" content="Kshitiz Mittal (Kayzee) is a PR and content graduate in Dundalk, Ireland: PR &amp; communications, content &amp; social media, brand storytelling. Browse the résumé, projects and contact details on a playful 3D desktop.">
+<meta name="author" content="Kshitiz Mittal">
+<meta name="theme-color" content="#245edc">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kayzee XP">
+<meta property="og:title" content="Kshitiz Mittal (Kayzee) · PR, Content &amp; Brand Storytelling">
+<meta property="og:description" content="A portfolio you can click around: résumé, projects, music and a way to say hello, on a voxel desktop floating over a grassy hill.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kshitiz Mittal (Kayzee) · Kayzee XP">
+<meta name="twitter:description" content="PR &amp; communications · Content &amp; social media · Brand storytelling.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%23f7f3e6'/%3E%3Crect x='1' y='1' width='6' height='6' fill='%233f86e6'/%3E%3Crect x='9' y='1' width='6' height='6' fill='%2386b8ef'/%3E%3Crect x='12' y='3' width='2' height='2' fill='%23ffd23a'/%3E%3Crect x='1' y='9' width='6' height='6' fill='%234a9f22'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%232f7d22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="xp.css">
+<script>
+  // which screen to paint first: boot (first visit) / login (returning) / direct (deep link) / shot (hero render)
+  (function () {
+    var q = location.search, mode = 'boot';
+    try { if (localStorage.getItem('kz.seen')) mode = 'login'; } catch (_) {}
+    if (/[?&](open|desktop)\b/.test(q)) mode = 'direct';
+    if (/[?&]shot\b/.test(q)) mode = 'shot';
+    window.__kzMode = mode;
+    document.documentElement.className = 'kz-mode-' + mode + (mode === 'boot' || mode === 'direct' ? ' kz-wait' : '');
+    if (mode === 'boot') {
+      var skip = function () { window.__kzSkip = true; };
+      addEventListener('pointerdown', skip, { once: true }); addEventListener('keydown', skip, { once: true });
+    }
+  })();
+  // ?shot: surface every failure visibly so a screenshot can't hide it
+  (function () {
+    if (!/[?&]shot\b/.test(location.search)) return;
+    function box() {
+      var b = document.getElementById('errbox');
+      if (!b) { b = document.createElement('pre'); b.id = 'errbox'; (document.body || document.documentElement).appendChild(b); }
+      return b;
+    }
+    window.__kzErr = function (t) { box().textContent += t + '\n'; };
+    window.onerror = function (m, s, l, c, e) { window.__kzErr('ERROR: ' + m + ' @ ' + s + ':' + l + ':' + c + (e && e.stack ? '\n' + e.stack : '')); };
+    window.addEventListener('unhandledrejection', function (e) { var r = e.reason; window.__kzErr('REJECTION: ' + (r && (r.stack || r.message) || r)); });
+    var ce = console.error.bind(console);
+    console.error = function () { try { window.__kzErr('console.error: ' + Array.prototype.map.call(arguments, String).join(' ').slice(0, 1200)); } catch (_) {} ce.apply(null, arguments); };
+    setTimeout(function () { if (!window.__kzReady) window.__kzErr('NOT READY after 10s (module never finished)'); }, 10000);
+  })();
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"
+} }
+</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js" crossorigin>
+</head>
+<body>
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <div id="css3d-labels"></div>
+  <div id="css3d"></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div id="taskbar" role="toolbar" aria-label="Taskbar"></div>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="crt" aria-hidden="true"></div>
+
+  <!-- boot (first visit): doubles as the loader while the world is built -->
+  <div id="kz-boot" class="kz-screen" aria-label="Kayzee XP is starting">
+    <div class="boot-center">
+      <div class="kz-flag" aria-hidden="true"></div>
+      <div class="boot-mark">
+        <div class="boot-owner">Kshitiz Mittal<sup>®</sup></div>
+        <div class="wordmark"><span class="wm-name">Kayzee</span><span class="wm-xp">xp</span></div>
+      </div>
+      <div class="boot-bar" role="progressbar" aria-label="Loading"><div class="boot-blocks"><i></i><i></i><i></i></div></div>
+    </div>
+    <div class="boot-copy">Copyright © 2026 Kshitiz Mittal</div>
+    <div class="boot-foot">Portfolio Edition</div>
+    <div class="boot-skip">Click or press any key to skip</div>
+  </div>
+
+  <!-- login (returning visitors land here) -->
+  <div id="kz-login" class="kz-screen" aria-label="Welcome">
+    <div class="login-top"></div>
+    <div class="login-mid">
+      <div class="login-left">
+        <div class="kz-logo small" aria-hidden="true"></div>
+        <div class="wordmark"><span class="wm-name">Kayzee</span><span class="wm-xp">xp</span></div>
+        <div class="wm-tag">PR · Content · Storytelling</div>
+        <p class="login-hint">To begin, click Kshitiz Mittal to log in</p>
+      </div>
+      <div class="login-divider" aria-hidden="true"></div>
+      <div class="login-right">
+        <button class="user-tile" id="kz-user" type="button">
+          <span class="user-pic"><span class="kz-avatar"></span></span>
+          <span class="user-text"><span class="user-name">Kshitiz Mittal</span><span class="user-role">PR · Content · Storytelling</span></span>
+        </button>
+        <div class="tod-chooser" role="radiogroup" aria-label="Time of day on the hill">
+          <button type="button" class="tod-pick" role="radio" data-tod="day" aria-checked="false"><span class="tp-ico" data-ico="sun"></span>Day</button>
+          <button type="button" class="tod-pick" role="radio" data-tod="sunset" aria-checked="false"><span class="tp-ico" data-ico="sunset"></span>Sunset</button>
+          <button type="button" class="tod-pick" role="radio" data-tod="night" aria-checked="false"><span class="tp-ico" data-ico="moon"></span>Night</button>
+        </div>
+      </div>
+    </div>
+    <div class="login-bot">
+      <button class="login-off" id="kz-login-off" type="button"><span class="off-ico"></span>Turn off Kayzee XP</button>
+      <span class="login-note">After you log on, my résumé is one double-click away.</span>
+    </div>
+  </div>
+
+  <!-- after the user tile: XP-style "Welcome" while the desktop gets ready -->
+  <div id="kz-welcome" class="kz-screen" aria-live="polite">
+    <div class="login-top"></div>
+    <div class="welcome-mid"><div class="welcome-word">welcome</div><div class="welcome-sub">Loading your personal settings…</div></div>
+    <div class="login-bot"></div>
+  </div>
+
+  <!-- deep links: a quiet cover while the world loads -->
+  <div id="kz-direct" class="kz-screen" aria-hidden="true"><div class="direct-msg">Loading Kayzee XP…</div></div>
+
+  <!-- summary for search engines, screen readers and no-JS visitors -->
+  <main id="kz-seo" class="sr-only">
+    <h1>Kshitiz Mittal ("Kayzee")</h1>
+    <p>PR &amp; Communications · Content &amp; Social Media · Brand Storytelling. Based in Dundalk, Co. Louth, Ireland.</p>
+    <p>PR and content graduate (BA Hons Digital Marketing and Public Relations, DkIT) and Vice President of DkIT Students' Union. Co-founded two local brands, doubling bookings at Sharpz Studio and growing Canopy Coffee's average daily sales 48% in its second month. Writes press releases and campaign copy, shoots and edits short-form and drone video, and presented research to a national panel in Dublin.</p>
+    <nav aria-label="Portfolio">
+      <ul>
+        <li><a href="/?open=resume">My résumé</a></li>
+        <li><a href="/?open=projects">My projects</a></li>
+        <li><a href="/?open=about">About me</a></li>
+        <li><a href="/?open=contact">Contact me</a></li>
+        <li><a href="/?open=music">My music</a></li>
+        <li><a href="https://www.linkedin.com/in/lefotugrapher" rel="me">LinkedIn</a></li>
+        <li><a href="mailto:mittalkshitiz13@gmail.com">mittalkshitiz13@gmail.com</a></li>
+      </ul>
+    </nav>
+  </main>
+  <noscript>
+    <div class="noscript">
+      <h1>Kshitiz Mittal ("Kayzee")</h1>
+      <p>PR &amp; Communications · Content &amp; Social Media · Brand Storytelling · Dundalk, Ireland</p>
+      <p>This portfolio is a 3D desktop and needs JavaScript. Meanwhile: <a href="https://www.linkedin.com/in/lefotugrapher">LinkedIn</a> · <a href="mailto:mittalkshitiz13@gmail.com">Email</a></p>
+    </div>
+  </noscript>
+
+  <script type="module" src="lib/boot.js"></script>
+  <script type="module" src="main.js" onerror="window.__kzErr && window.__kzErr('module script failed to load')"></script>
+</body>
+</html>

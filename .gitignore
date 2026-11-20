@@ -1,0 +1,20 @@
+# secrets and local-only files
+ADMIN-PASSWORD.txt
+.env*
+.vercel/
+node_modules/
+.DS_Store
+site/dev/.data/
+
+# copies and scratch
+room-deploy/
+spike/
+docs/reference/
+
+# Blender output (numbered snapshots are published as JPGs in media/snapshots)
+room/build/
+room/build_room3.py
+room/__pycache__/
+# old working copies
+room/*.v[0-9].py
+room/web-*

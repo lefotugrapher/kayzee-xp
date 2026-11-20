@@ -1,0 +1,97 @@
+/* Mines: Voxel Luna grass/earth styling. Every selector is scoped to .app-mines. */
+.app-mines {
+  display: flex; flex-direction: column; height: 100%;
+  background: #ece9d8; font: 12px/1.35 Tahoma, Verdana, "Segoe UI", sans-serif; color: #111;
+  user-select: none; -webkit-user-select: none; position: relative;
+}
+.app-mines .mn-menubar {
+  flex: none; height: 22px; display: flex; align-items: stretch; padding: 0 2px;
+  background: #ece9d8; border-bottom: 1px solid #d6d2bf; box-shadow: 0 1px 0 #fff; position: relative; z-index: 5;
+}
+.app-mines .mn-menu { position: relative; }
+.app-mines .mn-mtitle {
+  height: 100%; padding: 0 7px; border: 0; background: none; font: inherit; color: #111;
+}
+.app-mines .mn-mtitle:hover, .app-mines .mn-menu.open .mn-mtitle { background: #316ac5; color: #fff; }
+.app-mines .mn-drop {
+  display: none; position: absolute; left: 0; top: 100%; min-width: 172px; padding: 2px;
+  background: #fff; border: 1px solid #8d8d8d; box-shadow: 2px 3px 4px rgba(0,0,0,.28);
+}
+.app-mines .mn-menu.open .mn-drop { display: block; }
+.app-mines .mn-drop button {
+  display: flex; width: 100%; justify-content: space-between; gap: 16px; padding: 3px 10px 3px 22px;
+  border: 0; background: none; font: inherit; color: #111; text-align: left; position: relative;
+}
+.app-mines .mn-drop button span { color: #6b6b6b; }
+.app-mines .mn-drop button:hover { background: #316ac5; color: #fff; }
+.app-mines .mn-drop button:hover span { color: #dbe6ff; }
+.app-mines .mn-drop button.on.radio::before { content: ""; position: absolute; left: 8px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: currentColor; }
+.app-mines .mn-drop button.on.check::before { content: "✓"; position: absolute; left: 7px; top: 2px; font-size: 11px; }
+.app-mines .mn-drop hr { border: 0; border-top: 1px solid #c5c2b2; margin: 3px 2px; }
+
+.app-mines .mn-stage {
+  flex: 1 1 auto; min-height: 0; display: grid; place-items: center; overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 18% 0%, rgba(255,246,200,.55), rgba(255,246,200,0) 55%),
+    linear-gradient(180deg, #bfe3ff 0%, #d9efff 38%, #9fd46c 38.2%, #6ab842 100%);
+}
+.app-mines .mn-stage.mn-scroll { overflow: auto; place-items: start; }
+.app-mines .mn-frame {
+  margin: 10px; padding: 7px;
+  background: linear-gradient(180deg, #a87442, #8a5a30);
+  border-radius: 6px;
+  box-shadow:
+    inset 2px 2px 0 rgba(255,220,170,.45), inset -2px -2px 0 rgba(60,30,8,.45),
+    0 3px 0 #5e3a18, 0 8px 18px rgba(30,60,10,.35);
+}
+.app-mines .mn-head {
+  height: 40px; margin-bottom: 7px; padding: 0 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: linear-gradient(180deg, #7bc94f, #5aa936); border-radius: 4px;
+  box-shadow: inset 1px 1px 0 #b6ee86, inset -1px -1px 0 #3a7a22, inset 0 -4px 0 rgba(90,55,25,.55);
+}
+.app-mines .mn-count { width: 52px; height: auto; aspect-ratio: 21 / 11; image-rendering: pixelated; display: block; filter: drop-shadow(0 1px 0 rgba(40,25,5,.5)); }
+.app-mines .mn-sun {
+  width: 34px; height: 34px; padding: 0; border-radius: 6px; flex: none;
+  border: 1px solid #5e3a18;
+  background: linear-gradient(180deg, #ffe9a8, #ffcf6a);
+  box-shadow: inset 1px 1px 0 #fff8dc, inset -1px -2px 0 #d99a3a, 0 1px 0 rgba(60,30,0,.35);
+}
+.app-mines .mn-sun:active { box-shadow: inset 1px 2px 0 #d99a3a, inset -1px -1px 0 #fff2c4; }
+.app-mines .mn-sun canvas { width: 30px; height: 30px; display: block; margin: 1px auto 0; image-rendering: pixelated; }
+.app-mines .mn-boardwrap {
+  padding: 3px; border-radius: 3px; background: #5e3a18;
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,.35), inset -1px -1px 0 rgba(255,210,150,.35);
+}
+.app-mines .mn-board { display: block; image-rendering: pixelated; touch-action: manipulation; }
+
+/* dialogs */
+.app-mines .mn-modal { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(20,40,10,.18); z-index: 10; }
+.app-mines .mn-modal[hidden] { display: none; }
+.app-mines .mn-dlg {
+  width: min(270px, calc(100% - 20px)); background: #ece9d8; border: 3px solid #0b51d9; border-top: 0; border-radius: 6px 6px 2px 2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+.app-mines .mn-dlg-t {
+  height: 24px; display: flex; align-items: center; padding: 0 8px; margin: 0 -3px; border-radius: 6px 6px 0 0;
+  color: #fff; font: bold 12px "Trebuchet MS", Tahoma, sans-serif; text-shadow: 1px 1px 0 #0b2a8a;
+  background: linear-gradient(180deg, #4aa0ff 0%, #1873f3 12%, #0a5be0 50%, #0a4cc2 100%);
+}
+.app-mines .mn-dlg-b { padding: 10px 12px 4px; }
+.app-mines .mn-dlg-b p { margin: 0 0 8px; }
+.app-mines .mn-dlg-b ul { margin: 0 0 6px; padding-left: 18px; }
+.app-mines .mn-dlg-b li { margin-bottom: 3px; }
+.app-mines .mn-dlg-f { display: flex; justify-content: flex-end; gap: 6px; padding: 8px 12px 10px; }
+.app-mines .mn-btn {
+  min-width: 70px; height: 23px; padding: 0 10px; font: inherit; color: #111;
+  border: 1px solid #003c74; border-radius: 3px;
+  background: linear-gradient(180deg, #fff 0%, #ecebe6 86%, #d6d0c5 100%);
+}
+.app-mines .mn-btn.default { box-shadow: inset 0 0 0 1px #8fb6f4; }
+.app-mines .mn-btn:hover { box-shadow: inset 0 0 0 2px #f9b33f; }
+.app-mines .mn-best { width: 100%; border-collapse: collapse; }
+.app-mines .mn-best td { padding: 3px 4px; border-bottom: 1px solid #d8d4c2; }
+.app-mines .mn-best td.t { text-align: right; font-weight: bold; }
+.app-mines .mn-new { color: #2f7a1f; }
+.app-mines .mn-form { display: grid; gap: 6px; }
+.app-mines .mn-form label { display: flex; justify-content: space-between; align-items: center; }
+.app-mines .mn-form input { width: 70px; height: 21px; padding: 0 4px; font: inherit; border: 1px solid #7f9db9; }

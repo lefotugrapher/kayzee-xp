@@ -1,0 +1,81 @@
+/* My Resume (apps-owned). Scoped under .app-resume. Also used by the print iframe. */
+
+/* ---------------------------------------------------------------- viewer */
+.app-resume .rs-canvas {
+  flex: 1; min-height: 0; overflow: auto; position: relative; outline: none;
+  background: #808080; box-shadow: inset 1px 1px 0 #5f5f5f, inset -1px -1px 0 #a0a0a0;
+  touch-action: pan-x pan-y;
+}
+.app-resume .rs-canvas:focus-visible { box-shadow: inset 0 0 0 1px #000; }
+.app-resume .rs-stage { position: relative; }
+.app-resume .rs-pages { position: absolute; transform-origin: 0 0; display: flex; flex-direction: column; gap: 22px; width: 794px; }
+.app-resume .rs-pages .rs-page { cursor: zoom-in; box-shadow: 1px 1px 0 #3a3a3a, 3px 4px 10px rgba(0,0,0,.45); }
+.app-resume.rs-zoomed .rs-pages .rs-page { cursor: zoom-out; }
+.app-resume.rs-zoomed .rs-canvas { cursor: grab; }
+.app-resume.rs-dragging .rs-canvas, .app-resume.rs-dragging .rs-page { cursor: grabbing !important; }
+.app-resume .rs-printframe { position: fixed; right: 0; bottom: 0; width: 1px; height: 1px; border: 0; opacity: 0; pointer-events: none; }
+
+/* ---------------------------------------------------------------- the page (A4 @ 96dpi) */
+.app-resume .rs-page {
+  --ink: #141a26; --muted: #5a6273; --accent: #1f55c4; --rule: #cdd5e5; --side: #f1f4fa;
+  position: relative; width: 794px; height: 1123px; overflow: hidden; flex: none;
+  background: #fff; color: var(--ink); display: flex; flex-direction: column;
+  font: 10.4px/1.45 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-user-select: text; user-select: text; text-align: left;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.app-resume .rs-page * { box-sizing: border-box; }
+.app-resume .rs-header { flex: none; padding: 46px 48px 20px; }
+.app-resume .rs-name {
+  margin: 0; font: 700 38px/1.02 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: -.5px; color: #0f1a33;
+}
+.app-resume .rs-tagline { margin: 9px 0 0; font: 600 12.5px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--accent); letter-spacing: .2px; white-space: pre; }
+.app-resume .rs-header-cont { display: flex; justify-content: space-between; align-items: baseline; padding: 28px 48px 12px; }
+.app-resume .rs-name-sm { font: 700 15px "Helvetica Neue", Helvetica, Arial, sans-serif; color: #0f1a33; }
+.app-resume .rs-pageno { font: 10px "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--muted); }
+.app-resume .rs-accent { flex: none; height: 4px; background: linear-gradient(90deg, #0b3ea8 0%, #2a74ec 48%, #49a93a 82%, #7cc55a 100%); }
+.app-resume .rs-cols { flex: 1; min-height: 0; display: flex; }
+.app-resume .rs-side { flex: none; width: 226px; padding: 20px 20px 24px 30px; background: var(--side); border-right: 1px solid #e1e7f2; overflow: hidden; }
+.app-resume .rs-main { flex: 1; min-width: 0; padding: 14px 46px 26px 26px; overflow: hidden; }
+.app-resume .rs-block { break-inside: avoid; }
+.app-resume .rs-page.rs-noside .rs-side { display: none; }
+.app-resume .rs-page.rs-noside .rs-main { padding-left: 48px; padding-right: 48px; }
+
+.app-resume .rs-h {
+  margin: 14px 0 7px; padding-bottom: 4px; font: 700 10.5px/1.2 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: .16em; text-transform: uppercase; color: #0f1a33; border-bottom: 1px solid var(--rule);
+}
+.app-resume .rs-sh {
+  margin: 0 0 7px; font: 700 9.6px/1.2 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent);
+}
+.app-resume .rs-side .rs-block { margin-bottom: 15px; }
+.app-resume .rs-side .rs-skill { margin-bottom: 9px; }
+.app-resume .rs-side .rs-skill + .rs-block:not(.rs-skill) { margin-top: 15px; }
+.app-resume .rs-contact { margin: 0 0 6px; display: flex; gap: 7px; align-items: flex-start; font-size: 10px; line-height: 1.35; word-break: break-word; }
+.app-resume .rs-contact svg { display: block; margin-top: 2px; }
+.app-resume .rs-contact a { color: var(--ink); text-decoration: none; }
+.app-resume .rs-contact a:hover { color: var(--accent); text-decoration: underline; }
+.app-resume .rs-sk { margin: 0 0 2px; font: 700 10px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif; color: #0f1a33; }
+.app-resume .rs-sktext { margin: 0; font-size: 9.8px; line-height: 1.5; color: #333b4a; }
+.app-resume .rs-taglist { margin: 0; padding: 0; list-style: none; font-size: 9.8px; line-height: 1.5; color: #333b4a; }
+
+.app-resume .rs-summary { margin: 0; font-size: 10.6px; line-height: 1.55; color: #222a38; }
+.app-resume .rs-entry { margin-bottom: 10px; }
+.app-resume .rs-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.app-resume .rs-title { font: 700 11.2px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif; color: #0f1a33; }
+.app-resume .rs-dates { flex: none; font-size: 9.8px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.app-resume .rs-orgrow { margin-top: 1px; }
+.app-resume .rs-org { font-weight: 600; color: var(--accent); font-size: 10.4px; }
+.app-resume .rs-loc { flex: none; font-style: italic; color: var(--muted); font-size: 9.8px; white-space: nowrap; }
+.app-resume .rs-note { margin: 2px 0 0; font-style: italic; color: var(--muted); font-size: 9.9px; line-height: 1.45; }
+.app-resume .rs-bullets { margin: 4px 0 0; padding: 0; list-style: none; }
+.app-resume .rs-bullets li { position: relative; padding-left: 12px; margin-bottom: 2px; color: #222a38; }
+.app-resume .rs-bullets li::before {
+  content: ""; position: absolute; left: 2px; top: .62em; width: 4px; height: 4px; background: var(--accent); border-radius: 1px;
+}
+
+/* ---------------------------------------------------------------- print iframe (the @page rule lives in the iframe's own <style>) */
+.app-resume.rs-print { display: block; }
+.app-resume.rs-print .rs-page { width: 210mm; height: 297mm; box-shadow: none; break-after: page; page-break-after: always; }
+.app-resume.rs-print .rs-page:last-child { break-after: auto; page-break-after: auto; }

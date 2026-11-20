@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Control Panel · Kayzee XP</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%230a5be0%22/%3E%3Cpath d=%22M5 3v10M5 8l5-5M7 7l4 6%22 stroke=%22%23fff%22 stroke-width=%222%22 fill=%22none%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/admin/admin.css">
+<script type="module" src="/admin/admin.js"></script>
+</head>
+<body>
+<div id="desk">
+
+  <!-- ===================== Log on ===================== -->
+  <section id="logon" class="xpwin dlg logon" role="dialog" aria-labelledby="logon-title" hidden>
+    <div class="titlebar">
+      <span class="ticon" data-sprite="sun"></span>
+      <span class="title" id="logon-title">Log On to Kayzee XP</span>
+    </div>
+    <div class="logon-banner">
+      <span class="logo" data-sprite="sun" data-px="40"></span>
+      <div>
+        <div class="brand">Kayzee <b>XP</b></div>
+        <div class="sub">Control Panel</div>
+      </div>
+    </div>
+    <form class="body" id="logon-form" autocomplete="on">
+      <input type="text" name="username" value="admin" autocomplete="username" hidden>
+      <div class="field-row">
+        <label for="pw">Password:</label>
+        <input class="xp-input" id="pw" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="err" id="logon-err" role="alert"></p>
+      <div class="btnrow">
+        <button class="xpbtn default" type="submit" id="logon-ok">OK</button>
+        <a class="xpbtn" href="/">Cancel</a>
+      </div>
+    </form>
+  </section>
+
+  <!-- ===================== Control Panel ===================== -->
+  <section id="cp" class="xpwin main" hidden>
+    <div class="titlebar">
+      <span class="ticon" data-sprite="monitor"></span>
+      <span class="title" id="cp-title">Control Panel</span>
+      <div class="caps">
+        <button class="cap close" id="cap-close" aria-label="Log off" title="Log off"></button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tab-projects" aria-selected="true" aria-controls="pane-projects">
+          <span class="ti" data-sprite="folder"></span>Projects</button>
+        <button class="tab" role="tab" id="tab-settings" aria-selected="false" aria-controls="pane-settings">
+          <span class="ti" data-sprite="doc"></span>Settings</button>
+        <button class="tab" role="tab" id="tab-links" aria-selected="false" aria-controls="pane-links">
+          <span class="ti" data-sprite="net"></span>Recruiter links</button>
+        <button class="tab" role="tab" id="tab-guestbook" aria-selected="false" aria-controls="pane-guestbook">
+          <span class="ti" data-sprite="envelope"></span>Guestbook<span class="tab-n" id="tab-guestbook-n" hidden></span></button>
+        <button class="tab" role="tab" id="tab-visits" aria-selected="false" aria-controls="pane-visits">
+          <span class="ti" data-sprite="monitor"></span>Visits</button>
+      </div>
+      <div class="tools">
+        <button class="xpbtn default" id="btn-save" disabled>Save</button>
+        <a class="xpbtn tool-site" href="/" target="_blank" rel="noopener">View site</a>
+        <button class="xpbtn tool-logoff" id="btn-logoff">Log off</button>
+      </div>
+      <div class="balloon" id="balloon" role="status" hidden>
+        <b id="balloon-title">Saved</b><span id="balloon-text">Your changes are live.</span>
+      </div>
+    </div>
+
+    <div class="cp-body">
+      <aside class="sidepane">
+        <div class="sp-box">
+          <div class="sp-head">Project Tasks</div>
+          <div class="sp-list">
+            <button class="sp-link" id="sp-add"><span class="ti" data-sprite="folder"></span>Add a project</button>
+            <button class="sp-link" id="sp-settings"><span class="ti" data-sprite="doc"></span>Change my details</button>
+            <a class="sp-link" href="/" target="_blank" rel="noopener"><span class="ti" data-sprite="net"></span>View the site</a>
+          </div>
+        </div>
+        <div class="sp-box">
+          <div class="sp-head">Visitor Tasks</div>
+          <div class="sp-list">
+            <button class="sp-link" id="sp-links"><span class="ti" data-sprite="net"></span>Make a recruiter link</button>
+            <button class="sp-link" id="sp-guestbook"><span class="ti" data-sprite="envelope"></span>Read the guestbook</button>
+            <button class="sp-link" id="sp-visits"><span class="ti" data-sprite="monitor"></span>See who opened the site</button>
+          </div>
+        </div>
+        <div class="sp-box">
+          <div class="sp-head">Details</div>
+          <div class="sp-text" id="sp-details">Loading…</div>
+        </div>
+        <div class="sp-box">
+          <div class="sp-head">Tip</div>
+          <div class="sp-text">Paste a Playbook published page link (Share → Publish) or any embed code.
+            Drag the <span class="grip-mini">⋮⋮</span> handle to reorder. Nothing goes live until you press <b>Save</b>.</div>
+        </div>
+      </aside>
+
+      <main class="panes">
+        <section id="pane-projects" class="pane" role="tabpanel" aria-labelledby="tab-projects">
+          <div class="pane-head">
+            <h1>My Projects</h1>
+            <button class="xpbtn default" id="btn-add">Add project…</button>
+          </div>
+          <ul class="plist" id="plist" aria-label="Projects"></ul>
+          <p class="empty" id="plist-empty" hidden>No projects yet. Press <b>Add project…</b> to paste your first link.</p>
+        </section>
+
+        <section id="pane-settings" class="pane" role="tabpanel" aria-labelledby="tab-settings" hidden>
+          <form id="settings-form" class="settings" autocomplete="off">
+            <fieldset class="groupbox">
+              <legend>About me</legend>
+              <div class="grid2">
+                <label>Display name<input class="xp-input" name="displayName" maxlength="80" required></label>
+                <label>Nickname<input class="xp-input" name="nickname" maxlength="40"></label>
+              </div>
+              <label>Role line<input class="xp-input" name="role" maxlength="200"></label>
+              <label>Location<input class="xp-input" name="location" maxlength="120"></label>
+              <label>About<textarea class="xp-textarea" name="about" rows="6" maxlength="4000"></textarea></label>
+            </fieldset>
+            <fieldset class="groupbox">
+              <legend>Contact &amp; links</legend>
+              <label>Contact email<input class="xp-input" name="contactEmail" type="email" maxlength="254"></label>
+              <label>LinkedIn URL<input class="xp-input" name="linkedin" type="url" inputmode="url" placeholder="https://www.linkedin.com/in/…"></label>
+              <label>Résumé PDF URL <small>(optional, leave empty to hide the download)</small><input class="xp-input" name="resumePdfUrl" type="url" inputmode="url" placeholder="https://…/cv.pdf"></label>
+            </fieldset>
+            <fieldset class="groupbox">
+              <legend>Music</legend>
+              <label>Spotify playlist <small>(link, spotify: URI, or the embed code from Share → Embed)</small>
+                <input class="xp-input" name="spotifyPlaylist" placeholder="https://open.spotify.com/playlist/…"></label>
+              <p class="hint" id="sp-hint"></p>
+            </fieldset>
+          </form>
+        </section>
+
+        <section id="pane-links" class="pane" role="tabpanel" aria-labelledby="tab-links" hidden>
+          <div class="pane-head">
+            <h1>Recruiter links</h1>
+            <button class="xpbtn" id="lk-refresh" type="button">Refresh</button>
+          </div>
+          <p class="lead">One link per company. It opens the room with your sticky note on the monitor, and the Visits tab shows when it was opened.</p>
+          <form id="lk-form" class="lk-form" autocomplete="off" novalidate>
+            <fieldset class="groupbox">
+              <legend>New link</legend>
+              <div class="grid3">
+                <label>Company<input class="xp-input" name="company" maxlength="40" required placeholder="Who is it for?"></label>
+                <label>Sticky note <small id="lk-note-n">0 / 26</small><input class="xp-input" name="note" maxlength="26" placeholder="hi there :)"></label>
+                <label>Open first<select class="xp-select" name="open"></select></label>
+              </div>
+              <p class="err" id="lk-err" role="alert"></p>
+              <div class="btnrow">
+                <button class="xpbtn default" type="submit" id="lk-create">Create link</button>
+              </div>
+            </fieldset>
+          </form>
+          <p class="err pane-err" id="lk-load-err" role="alert"></p>
+          <ul class="vlist" id="lk-list" aria-label="Recruiter links"></ul>
+          <p class="empty" id="lk-empty" hidden>No links yet. Type a company name above and press <b>Create link</b>.</p>
+        </section>
+
+        <section id="pane-guestbook" class="pane" role="tabpanel" aria-labelledby="tab-guestbook" hidden>
+          <div class="pane-head">
+            <h1>Guestbook</h1>
+            <button class="xpbtn" id="gb-refresh" type="button">Refresh</button>
+          </div>
+          <fieldset class="groupbox">
+            <legend>Approval</legend>
+            <label class="chk"><input type="checkbox" id="gb-auto"> Show new entries without my approval</label>
+            <p class="hint">When this is off, a new entry stays hidden until you press Approve. Press <b>Save</b> after changing it. Approve, Hide and Delete below happen straight away.</p>
+          </fieldset>
+          <p class="err pane-err" id="gb-load-err" role="alert"></p>
+          <ul class="vlist" id="gb-list" aria-label="Guestbook entries"></ul>
+          <p class="empty" id="gb-empty" hidden>Nobody has signed the guestbook yet.</p>
+        </section>
+
+        <section id="pane-visits" class="pane" role="tabpanel" aria-labelledby="tab-visits" hidden>
+          <div class="pane-head">
+            <h1>Visits</h1>
+            <div class="head-btns">
+              <button class="xpbtn" id="vs-refresh" type="button">Refresh</button>
+              <button class="xpbtn danger" id="vs-clear" type="button">Clear…</button>
+            </div>
+          </div>
+          <div class="tiles">
+            <div class="tile"><b id="vs-total">0</b><span>visits in total</span></div>
+            <div class="tile"><b id="vs-last7">0</b><span>in the last 7 days</span></div>
+            <div class="tile"><b id="vs-zoom">0%</b><span id="vs-zoom-sub">got to the computer</span></div>
+          </div>
+          <p class="err pane-err" id="vs-load-err" role="alert"></p>
+          <div class="tablewrap" id="vs-wrap">
+            <table class="vtable" id="vs-table">
+              <thead><tr>
+                <th>When</th><th>Who</th><th>Device</th><th>Country</th><th>Came from</th>
+                <th>Got to the computer?</th><th>Time on page</th><th>What they opened</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="empty" id="vs-empty" hidden>No visits recorded yet.</p>
+          <p class="hint">No IP addresses or browser details are kept. Visits from a browser that has logged on here are not counted.</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="statusbar">
+      <span id="status">Ready</span>
+      <span id="status-right"></span>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== Project dialog ===================== -->
+<div class="modal" id="pd-modal" hidden>
+  <section class="xpwin dlg pdlg" role="dialog" aria-modal="true" aria-labelledby="pd-title">
+    <div class="titlebar">
+      <span class="ticon" data-sprite="folder"></span>
+      <span class="title" id="pd-title">Add project</span>
+      <div class="caps"><button class="cap close" data-close aria-label="Close"></button></div>
+    </div>
+    <form class="body pd-body" id="pd-form" autocomplete="off" novalidate>
+      <div class="pd-cols">
+        <div class="pd-fields">
+          <label class="paste">Link or embed code
+            <textarea class="xp-textarea" name="url" rows="2" required placeholder="https://www.playbook.com/s/kayzeem/…  or  <iframe src=…>"></textarea>
+          </label>
+          <p class="hint">Paste a Playbook published page link (Share → Publish) or any embed code.</p>
+          <p class="detect" id="pd-detect"></p>
+          <label>Title<input class="xp-input" name="title" maxlength="140" required></label>
+          <div class="grid2">
+            <label>Category<input class="xp-input" name="category" list="cat-list" maxlength="60"></label>
+            <label>Year<input class="xp-input" name="year" maxlength="12" inputmode="numeric"></label>
+          </div>
+          <datalist id="cat-list"></datalist>
+          <label>Short description<textarea class="xp-textarea" name="description" rows="3" maxlength="1200"></textarea></label>
+          <label>Cover image URL <small>(optional)</small><input class="xp-input" name="cover" type="url" inputmode="url"></label>
+          <div class="grid2">
+            <label>Slug<input class="xp-input" name="id" maxlength="56"></label>
+            <label>Type
+              <select class="xp-select" name="type">
+                <option value="">Auto-detect</option>
+                <option value="page">Page</option>
+                <option value="video">Video</option>
+                <option value="image">Image</option>
+              </select>
+            </label>
+          </div>
+          <label class="chk"><input type="checkbox" name="visible" checked> Show on the site</label>
+          <p class="err" id="pd-err" role="alert"></p>
+        </div>
+        <div class="pd-preview">
+          <div class="addr"><span class="addr-lbl">Address</span><span class="addr-url" id="pd-addr">http://www.kayzee.xp/projects/</span></div>
+          <div class="pv" id="pd-pv"><p class="pv-empty">Preview appears here.</p></div>
+        </div>
+      </div>
+      <div class="btnrow">
+        <button class="xpbtn default" type="submit" id="pd-ok">OK</button>
+        <button class="xpbtn" type="button" data-close>Cancel</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<!-- ===================== Message box ===================== -->
+<div class="modal" id="mb-modal" hidden>
+  <section class="xpwin dlg mbox" role="alertdialog" aria-modal="true" aria-labelledby="mb-title" aria-describedby="mb-text">
+    <div class="titlebar">
+      <span class="ticon" data-sprite="about"></span>
+      <span class="title" id="mb-title">Kayzee XP</span>
+      <div class="caps"><button class="cap close" data-mb="cancel" aria-label="Close"></button></div>
+    </div>
+    <div class="body">
+      <div class="mb-msg"><span class="mb-icon" id="mb-icon">!</span><div id="mb-text"></div></div>
+      <div class="btnrow" id="mb-btns"></div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

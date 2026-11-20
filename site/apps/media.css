@@ -1,0 +1,89 @@
+/* Media Player (apps-owned). Scoped under .app-media */
+.app-media { container-type: inline-size; container-name: kxmedia; }
+
+/* now playing strip */
+.app-media .mp-np {
+  flex: none; display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px;
+  background: linear-gradient(180deg, #34508a 0%, #22396a 48%, #1a2e58 52%, #213a6c 100%);
+  border-bottom: 1px solid #0f1d3d; box-shadow: inset 0 1px 0 rgba(255,255,255,.22); color: #fff; min-width: 0;
+}
+.app-media .mp-np-ico { flex: none; filter: drop-shadow(0 1px 0 rgba(0,0,0,.4)); }
+.app-media .mp-np-text { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.app-media .mp-np-title { font: bold 12px "Trebuchet MS", Tahoma, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 0 #0b1530; }
+.app-media .mp-np-sub { font: 11px Tahoma, Verdana, sans-serif; color: #a9c2ee; white-space: nowrap; }
+
+/* stage */
+.app-media .mp-stage { position: relative; flex: 1; min-height: 0; background: #000; overflow: hidden; outline: none; display: grid; place-items: center; }
+.app-media .mp-video, .app-media .mp-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; display: block; }
+.app-media .mp-video { object-fit: contain; }
+.app-media .mp-buffer { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #a9c2ee; font: 11px Tahoma, Verdana, sans-serif; pointer-events: none; }
+.app-media .mp-buffer-ring { width: 30px; height: 30px; border-radius: 50%; border: 3px solid rgba(169,194,238,.25); border-top-color: #7fb2ff; animation: mpspin 0.9s linear infinite; }
+@keyframes mpspin { to { transform: rotate(360deg); } }
+.app-media .mp-error { display: flex; flex-direction: column; align-items: center; gap: 8px; color: #dfe8f8; font: 12px Tahoma, Verdana, sans-serif; text-align: center; padding: 20px; }
+.app-media .mp-error p { margin: 0; }
+
+/* transport */
+.app-media .mp-transport {
+  flex: none; padding: 4px 8px 6px;
+  background: linear-gradient(180deg, #4d6ea8 0%, #2b4a86 46%, #1d3670 54%, #284680 100%);
+  border-top: 1px solid #7896cc; box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+}
+.app-media .mp-seekrow { display: flex; padding: 1px 2px 4px; }
+.app-media .mp-controls { display: flex; align-items: center; gap: 10px; }
+.app-media .mp-left, .app-media .mp-right { display: flex; align-items: center; gap: 3px; flex: none; }
+.app-media .mp-gap { width: 6px; }
+.app-media .mp-b {
+  width: 28px; height: 28px; padding: 0; display: grid; place-items: center; border-radius: 50%;
+  border: 1px solid #0f2552; background: radial-gradient(120% 120% at 35% 25%, #8fb2ec 0%, #4570c0 45%, #24488f 100%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.55), 0 1px 1px rgba(0,0,0,.35);
+}
+.app-media .mp-b:hover:not(:disabled) { background: radial-gradient(120% 120% at 35% 25%, #b5d0ff 0%, #5d8ae0 45%, #2c56a8 100%); }
+.app-media .mp-b:active:not(:disabled) { box-shadow: inset 0 2px 3px rgba(0,0,40,.55); }
+.app-media .mp-b:disabled { opacity: .45; }
+.app-media .mp-b svg { display: block; }
+.app-media .mp-b.mp-play {
+  width: 40px; height: 40px; margin: -6px 2px; border-color: #0b3d15;
+  background: radial-gradient(120% 120% at 35% 25%, #c8f5b4 0%, #57c13d 42%, #23861b 100%);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,.7), 0 2px 3px rgba(0,0,0,.45), 0 0 0 2px rgba(255,255,255,.12);
+}
+.app-media .mp-b.mp-play:hover:not(:disabled) { background: radial-gradient(120% 120% at 35% 25%, #dcffcd 0%, #6fd654 42%, #2a9a20 100%); }
+.app-media .mp-lcd {
+  flex: 1; min-width: 0; height: 26px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 10px;
+  border-radius: 4px; border: 1px solid #0b1734; background: linear-gradient(180deg, #0c1a33, #13284d);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.15);
+  font: 11px Tahoma, Verdana, sans-serif; color: #9fe1ff; text-shadow: 0 0 4px rgba(120,210,255,.5); white-space: nowrap; overflow: hidden;
+}
+.app-media .mp-lcd-time { font-variant-numeric: tabular-nums; }
+
+/* range inputs */
+.app-media input[type=range] { -webkit-appearance: none; appearance: none; background: transparent; margin: 0; height: 14px; --p: 0%; }
+.app-media input[type=range]::-webkit-slider-runnable-track {
+  height: 5px; border-radius: 3px; border: 1px solid #0b1734;
+  background: linear-gradient(90deg, #6fd3ff 0, #2a8fe0 var(--p), #0f1d3d var(--p));
+}
+.app-media input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 13px; height: 13px; margin-top: -5px; border-radius: 50%; border: 1px solid #0f2552;
+  background: radial-gradient(circle at 35% 30%, #fff 0, #cfe0ff 40%, #6f95d8 100%); box-shadow: 0 1px 1px rgba(0,0,0,.4);
+}
+.app-media input[type=range]:disabled { opacity: .5; }
+.app-media .mp-seek { flex: 1; }
+.app-media .mp-vol { width: 70px; margin: 0 4px; }
+
+/* picture mode */
+.app-media .mp-ptools { display: none; justify-content: center; border-top: 1px solid #cdc8b2; border-bottom: 0; }
+.app-media.mp-picture .mp-ptools { display: flex; }
+.app-media.mp-picture .mp-transport { display: none; }
+.app-media.mp-picture .mp-stage { background: #fff; display: block; overflow: auto; }
+.app-media .mp-imgwrap { display: grid; place-items: center; min-width: 100%; min-height: 100%; }
+.app-media .mp-img { display: block; max-width: none; box-shadow: 0 1px 4px rgba(0,0,0,.35); -webkit-user-drag: none; user-select: none; image-rendering: auto; }
+.app-media.mp-pannable .mp-stage { cursor: grab; }
+.app-media.mp-panning .mp-stage { cursor: grabbing; }
+
+/* embeds manage their own playback: dim the local transport controls */
+.app-media.mp-embed .mp-seekrow { display: none; }
+.app-media.mp-embed .mp-play, .app-media.mp-embed .mp-left > .mp-b:nth-child(2), .app-media.mp-embed .mp-right > .mp-b:first-child, .app-media.mp-embed .mp-vol { display: none; }
+
+@container kxmedia (max-width: 460px) {
+  .app-media .mp-vol, .app-media .mp-np-sub { display: none; }
+  .app-media .mp-controls { gap: 6px; }
+}

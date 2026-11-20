@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Headline Rush test harness</title>
+<script>
+  // collect every error so CDP tests and screenshots can't miss them
+  window.__errors = [];
+  window.addEventListener('error', function (e) { window.__errors.push('ERROR: ' + e.message + ' @ ' + e.filename + ':' + e.lineno); });
+  window.addEventListener('unhandledrejection', function (e) { var r = e.reason; window.__errors.push('REJECTION: ' + (r && (r.stack || r.message) || r)); });
+  (function () { var ce = console.error.bind(console); console.error = function () { window.__errors.push('console.error: ' + Array.prototype.map.call(arguments, String).join(' ')); ce.apply(null, arguments); }; })();
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"
+} }
+</script>
+<link rel="stylesheet" href="../xp.css" onerror="this.remove()">
+<style>
+  html, body { margin: 0; height: 100%; }
+  body {
+    font: 12px/1.35 Tahoma, Verdana, "Segoe UI", sans-serif;
+    background: linear-gradient(180deg, #5aa2ef 0%, #9fd0ff 55%, #6fbf45 56%, #3f8f2a 100%);
+    display: grid; place-items: center; overflow: hidden;
+  }
+  #stage { perspective: 1400px; }
+  .fakewin {
+    display: flex; flex-direction: column;
+    background: #0b51d9; padding: 0 4px 4px; border-radius: 8px 8px 1px 1px;
+    box-shadow: 0 18px 40px rgba(0,30,0,.35);
+  }
+  .fakewin.max { position: fixed; inset: 0; border-radius: 0; padding: 0; }
+  .fakewin .tb {
+    height: 30px; display: flex; align-items: center; padding: 0 8px; color: #fff;
+    font: bold 13px/1 "Trebuchet MS", Tahoma, sans-serif; text-shadow: 1px 1px 0 #0b2a8a;
+    background: linear-gradient(180deg, #4aa0ff 0%, #1873f3 10%, #0a5be0 45%, #0a4cc2 100%);
+    border-radius: 8px 8px 0 0; flex: none; gap: 8px;
+  }
+  .fakewin.max .tb { border-radius: 0; }
+  .fakewin .tb .st { margin-left: auto; font: 11px Tahoma; opacity: .85; }
+  .fakewin .app-root { position: relative; overflow: hidden; background: #ece9d8; flex: 1 1 auto; min-height: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="win" class="fakewin"><div class="tb"><canvas id="ico" width="16" height="16" style="width:16px;height:16px;image-rendering:pixelated"></canvas><span id="ttl">…</span><span class="st" id="st"></span></div><div id="root" class="app-root"></div></div>
+</div>
+<script type="module">
+  const q = new URLSearchParams(location.search);
+  const id = q.get('id') || 'typer';
+  const root = document.getElementById('root');
+  const win = document.getElementById('win');
+  root.classList.add('app-' + id);
+  const link = document.createElement('link');
+  link.rel = 'stylesheet'; link.href = `../apps/${id}.css`;
+  await new Promise((res) => { link.onload = res; link.onerror = res; document.head.appendChild(link); });
+  const app = (await import(`../apps/${id}.js`)).default;
+  document.getElementById('ttl').textContent = app.title;
+  // draw the app's own 16x16 icon module (apps/<id>.icon.js) in the title bar, if it has one
+  try {
+    const ic = (await import(`../apps/${id}.icon.js`)).default, g = document.getElementById('ico').getContext('2d');
+    ic.rows.forEach((row, y) => { for (let x = 0; x < row.length; x++) if (row[x] !== '.') { g.fillStyle = ic.palette[row[x]]; g.fillRect(x, y, 1, 1); } });
+    if (q.has('icon')) { const big = document.getElementById('ico'); big.style.width = big.style.height = '64px'; }
+  } catch { document.getElementById('ico').remove(); }
+  const setSize = (w, h) => { root.style.width = w + 'px'; root.style.height = h + 'px'; };
+  if (q.has('max')) { win.classList.add('max'); document.getElementById('stage').style.perspective = 'none'; }
+  else setSize(+q.get('w') || app.size[0], +q.get('h') || app.size[1]);
+  if (q.has('tilt')) win.style.transform = 'rotateY(9deg) rotateX(5deg) scale(.92)';
+  const ctx = {
+    args: {}, isMobile: q.has('mobile'),
+    openApp: (a, b) => console.log('openApp', a, b),
+    setTitle: (t) => { document.getElementById('ttl').textContent = t; },
+    setStatus: (s) => { document.getElementById('st').textContent = s; },
+    close: () => { inst.unmount && inst.unmount(); root.innerHTML = ''; window.__closed = true; },
+    site: Promise.resolve({ settings: {}, projects: [] }),
+    icon: (key, px = 16) => { const c = document.createElement('canvas'); c.width = c.height = px; return c; },
+    sound: (n) => { (window.__sounds ||= []).push(n); },
+    shield: () => {},
+    resize: q.has('max') ? undefined : (w, h) => setSize(w, h),
+  };
+  const inst = app.mount(root, ctx) || {};
+  if (!q.has('nofocus')) inst.onFocus && inst.onFocus();
+  new ResizeObserver(() => inst.onResize && inst.onResize(root.clientWidth, root.clientHeight)).observe(root);
+  window.__app = { app, inst, ctx, root, setSize };
+  window.__kzReady = true;
+</script>
+</body>
+</html>

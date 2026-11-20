@@ -1,0 +1,35 @@
+/* Recycle Bin (apps-owned). Scoped under .app-recycle */
+.app-recycle { container-type: inline-size; container-name: kxrecycle; }
+.app-recycle .rb-main { padding: 12px 14px; outline: none; }
+.app-recycle .rb-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px 10px; }
+.app-recycle .rb-tile { display: flex; align-items: center; gap: 8px; padding: 4px; font: 11px Tahoma, Verdana, sans-serif; min-width: 0; }
+.app-recycle .rb-ico { flex: none; width: 48px; height: 48px; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.18)); }
+.app-recycle .rb-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.app-recycle .rb-name { padding: 1px 3px; margin-left: -3px; align-self: flex-start; max-width: 100%; word-break: break-word; }
+.app-recycle .rb-sub { color: #6d6c62; }
+.app-recycle .rb-item.sel .rb-name { background: #316ac5; color: #fff; }
+.app-recycle .rb-item.sel .rb-ico { filter: drop-shadow(1px 2px 1px rgba(0,0,0,.18)) sepia(.4) hue-rotate(180deg) saturate(2) brightness(.85); }
+.app-recycle .rb-main:not(:focus-within) .rb-item.sel .rb-name { background: #ece9d8; color: #000; }
+.app-recycle .rb-empty { display: flex; align-items: center; gap: 12px; margin: 10px 4px; color: #6d6c62; font: 11px Tahoma, Verdana, sans-serif; }
+.app-recycle .rb-empty span { opacity: .55; }
+
+.app-recycle .rb-listmode { padding: 0; }
+.app-recycle .rb-head, .app-recycle .rb-row { display: grid; grid-template-columns: minmax(170px, 2.2fr) minmax(120px, 1.4fr) minmax(110px, 1fr) 70px; }
+.app-recycle .rb-head { position: sticky; top: 0; height: 21px; background: linear-gradient(180deg, #fff 0%, #f8f8f3 60%, #ebeadb 100%); border-bottom: 3px solid #e2decd; }
+.app-recycle .rb-head .rb-c { display: flex; align-items: center; padding: 0 8px; border-right: 1px solid #d6d2c2; box-shadow: inset -1px 0 0 #fff; font: 11px Tahoma, Verdana, sans-serif; }
+.app-recycle .rb-row .rb-c { display: flex; align-items: center; gap: 5px; padding: 3px 8px; font: 11px Tahoma, Verdana, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.app-recycle .rb-row .rb-name { margin: 0; padding: 0; overflow: hidden; text-overflow: ellipsis; }
+.app-recycle .rb-row:hover { background: #f1f5fd; }
+.app-recycle .rb-row.sel { background: #316ac5; }
+.app-recycle .rb-row.sel .rb-c, .app-recycle .rb-row.sel .rb-name { color: #fff; background: none; }
+.app-recycle .rb-main:not(:focus-within) .rb-row.sel { background: #ece9d8; }
+.app-recycle .rb-main:not(:focus-within) .rb-row.sel .rb-c, .app-recycle .rb-main:not(:focus-within) .rb-row.sel .rb-name { color: #000; }
+.app-recycle .rb-details { display: flex; flex-direction: column; gap: 3px; font: 11px/1.4 Tahoma, Verdana, sans-serif; word-break: break-word; }
+
+@container kxrecycle (max-width: 540px) {
+  .app-recycle .kx-sidepane { display: none; }
+  .app-recycle .rb-head, .app-recycle .rb-row { grid-template-columns: minmax(150px, 2fr) 70px; }
+  .app-recycle .rb-head .rb-c:nth-child(2), .app-recycle .rb-head .rb-c:nth-child(3),
+  .app-recycle .rb-row .rb-c:nth-child(2), .app-recycle .rb-row .rb-c:nth-child(3) { display: none; }
+  .app-recycle .kx-tool .kx-tool-label { display: none; }
+}

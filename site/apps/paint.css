@@ -1,0 +1,68 @@
+/* Paint (apps-owned). Scoped under .app-paint */
+.app-paint { container-type: inline-size; container-name: kxpaint; }
+.app-paint .pt-body { flex: 1; min-height: 0; display: flex; }
+
+/* tool box */
+.app-paint .pt-toolbox { flex: none; width: 58px; padding: 4px 4px 6px; display: flex; flex-direction: column; align-items: center; gap: 6px; border-right: 1px solid #c9c5b2; box-shadow: inset -1px 0 0 #fff; }
+.app-paint .pt-tools { display: grid; grid-template-columns: 25px 25px; gap: 1px; }
+.app-paint .pt-tool {
+  width: 25px; height: 25px; padding: 0; display: grid; place-items: center; border: 1px solid transparent; border-radius: 2px; background: none;
+}
+.app-paint .pt-tool:hover { border-color: #cecec3; background: linear-gradient(180deg, #fff, #ebeae3); }
+.app-paint .pt-tool.on {
+  border-color: #9d9d92; background: linear-gradient(180deg, #e4e3dc, #f6f5f0);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,.2);
+}
+.app-paint .pt-tool svg { display: block; }
+.app-paint .pt-opts {
+  width: 46px; min-height: 66px; padding: 3px; display: flex; flex-direction: column; align-items: stretch; gap: 2px;
+  border: 1px solid #fff; border-top-color: #a5a196; border-left-color: #a5a196; background: #ece9d8;
+}
+.app-paint .pt-opt { height: 15px; padding: 0; border: 0; background: none; display: grid; place-items: center; border-radius: 1px; }
+.app-paint .pt-opt.on { background: #316ac5; }
+.app-paint .pt-mark { display: block; background: #000; }
+.app-paint .pt-mark-brush { border-radius: 50%; }
+.app-paint .pt-mark-line { width: 34px; }
+.app-paint .pt-opt.on .pt-mark { background: #fff; }
+.app-paint .pt-style { height: 20px; }
+.app-paint .pt-style span { display: block; width: 32px; height: 13px; }
+.app-paint .pt-style .round { border-radius: 50%; }
+.app-paint .pt-style-0 { border: 1px solid #000; }
+.app-paint .pt-style-1 { border: 1px solid #000; background: #9a9a9a; }
+.app-paint .pt-style-2 { background: #9a9a9a; }
+.app-paint .pt-opt.on .pt-style-0 { border-color: #fff; }
+.app-paint .pt-opt.on .pt-style-1 { border-color: #fff; background: #cfe0ff; }
+.app-paint .pt-opt.on .pt-style-2 { background: #cfe0ff; }
+
+/* workspace */
+.app-paint .pt-work { flex: 1; min-width: 0; min-height: 0; overflow: hidden; background: #808080; padding: 4px; box-shadow: inset 1px 1px 0 #404040; }
+.app-paint .pt-sheet { position: relative; display: inline-block; line-height: 0; box-shadow: 1px 1px 0 #404040, 3px 3px 0 rgba(0,0,0,.15); }
+.app-paint .pt-canvas { display: block; background: #fff; image-rendering: pixelated; }
+.app-paint .pt-overlay { position: absolute; left: 0; top: 0; width: 100%; height: 100%; touch-action: none; image-rendering: pixelated; cursor: crosshair; }
+.app-paint[data-tool="fill"] .pt-overlay, .app-paint[data-tool="picker"] .pt-overlay { cursor: cell; }
+.app-paint[data-tool="eraser"] .pt-overlay { cursor: none; }
+
+/* colour box */
+.app-paint .pt-colorbox { flex: none; display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-top: 1px solid #fff; box-shadow: 0 -1px 0 #c9c5b2; overflow-x: auto; overflow-y: hidden; }
+.app-paint .pt-current {
+  position: relative; flex: none; width: 34px; height: 34px;
+  border: 1px solid #fff; border-top-color: #a5a196; border-left-color: #a5a196; background:
+    repeating-conic-gradient(#d9d6c6 0 25%, #ece9d8 0 50%) 0 0 / 4px 4px;
+}
+.app-paint .pt-sw-primary, .app-paint .pt-sw-secondary { position: absolute; width: 15px; height: 15px; border: 1px solid #fff; box-shadow: 0 0 0 1px #808080; }
+.app-paint .pt-sw-primary { left: 4px; top: 4px; z-index: 1; }
+.app-paint .pt-sw-secondary { right: 4px; bottom: 4px; }
+.app-paint .pt-palette { display: grid; grid-template-columns: repeat(14, 16px); grid-template-rows: 16px 16px; gap: 1px; flex: none; }
+.app-paint .pt-swatch { width: 16px; height: 16px; padding: 0; border: 1px solid #808080; box-shadow: inset 1px 1px 0 rgba(255,255,255,.6), inset -1px -1px 0 rgba(0,0,0,.15); border-radius: 0; }
+.app-paint .pt-swatch:hover { outline: 1px solid #316ac5; outline-offset: 0; }
+.app-paint .pt-picker { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; left: 0; bottom: 0; }
+
+@container kxpaint (max-width: 460px) {
+  .app-paint .pt-body { flex-direction: column; }
+  .app-paint .pt-toolbox { width: auto; flex-direction: row; padding: 3px 4px; border-right: 0; border-bottom: 1px solid #c9c5b2; box-shadow: 0 1px 0 #fff; overflow-x: auto; }
+  .app-paint .pt-tools { grid-template-columns: repeat(8, 25px); }
+  .app-paint .pt-opts { flex-direction: row; width: auto; min-height: 0; height: 27px; align-items: center; }
+  .app-paint .pt-opt { width: 22px; height: 19px; }
+  .app-paint .pt-mark-line { width: 16px; }
+  .app-paint .pt-style span { width: 16px; height: 11px; }
+}
