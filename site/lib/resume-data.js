@@ -12,7 +12,7 @@ export const resume = {
 
   summary:
     "PR and content graduate (BA Hons Digital Marketing and Public Relations, DkIT) and Vice President of " +
-    "DkIT Students' Union. Co-founded two local brands, doubling bookings at Sharpz Studio and growing Canopy " +
+    "DkIT Students' Union. Former co-founder of two local brands, doubling bookings at Sharpz Studio and growing Canopy " +
     "Coffee's average daily sales 48% in its second month. Writes press releases and campaign copy, shoots and " +
     'edits short-form and drone video, and presented research to a national panel in Dublin.',
 
@@ -31,7 +31,7 @@ export const resume = {
       ],
     },
     {
-      title: 'Co-Founder',
+      title: 'Former Co-Founder',
       org: 'Canopy Coffee',
       location: 'Newry, Northern Ireland',
       dates: 'Jul 2026 - Oct 2026',
@@ -44,7 +44,7 @@ export const resume = {
       ],
     },
     {
-      title: 'Co-Founder',
+      title: 'Former Co-Founder',
       org: 'Sharpz Studio',
       location: 'Crossmaglen and Dundalk',
       dates: 'Jan 2025 - Oct 2026',
@@ -161,8 +161,8 @@ export const resume = {
   // Short, CV-backed highlight cards (About Me window)
   highlights: [
     { key: 'su', title: "Vice President, DkIT Students' Union", text: 'VP since Jul 2026, after a year as International Officer. Produces SU communications and social content.' },
-    { key: 'canopy', title: 'Co-founded Canopy Coffee', text: 'Roadside coffee trailer in Newry. Average daily sales up 48% from August to September 2026.' },
-    { key: 'sharpz', title: 'Co-founded Sharpz Studio', text: 'Doubled bookings across two barbershops and grew the repeat-customer rate.' },
+    { key: 'canopy', title: 'Former co-founder, Canopy Coffee', text: 'Roadside coffee trailer in Newry. Average daily sales up 48% from August to September 2026.' },
+    { key: 'sharpz', title: 'Former co-founder, Sharpz Studio', text: 'Doubled bookings across two barbershops and grew the repeat-customer rate.' },
     { key: 'research', title: 'Presented to a national panel', text: 'N-TUTORR student researcher on the digital transformation of teaching, presented in Dublin.' },
   ],
 

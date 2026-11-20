@@ -49,7 +49,7 @@ export default {
         { label: '&Close', action: () => ctx.close() },
       ] },
       { label: '&View', items: [
-        { label: '&Full Screen', shortcut: 'F', action: () => fullscreen() },
+        { label: '&Full Screen', shortcut: 'F', checked: () => !!(ctx.isMaximized && ctx.isMaximized()), action: () => fullscreen() },
         { sep: true },
         { label: '&Best Fit', hidden: () => current?.kind !== 'image', checked: () => zoom === 0, action: () => setZoom(0) },
         { label: '&Actual Size', hidden: () => current?.kind !== 'image', checked: () => zoom === 1, action: () => setZoom(1) },
@@ -187,10 +187,12 @@ export default {
     bag.on(seek, 'change', () => { seeking = false; if (video && video.duration) video.currentTime = video.duration * seek.value / 1000; });
     bag.on(vol, 'input', () => { paintSeek(); if (video) { video.volume = vol.value / 100; video.muted = false; bMute.innerHTML = iconSVG('volume', 18); } });
 
+    // "Full screen" fills the tab: the player window maximises over the whole desktop and the
+    // video scales with it. Browser full screen is not used here because the browser often
+    // refuses it for a page running inside another page, which left the video small.
     function fullscreen() {
-      const el = stage;
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-      else if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+      if (ctx.toggleMaximize) ctx.toggleMaximize();
     }
 
     // ---------------------------------------------------------------- pictures
@@ -245,6 +247,7 @@ export default {
       if (e.target.closest && e.target.closest('input[type=range]') && (e.key.startsWith('Arrow'))) return;
       if (e.key === ' ' && video) { e.preventDefault(); toggle(); }
       else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); fullscreen(); }
+      else if (e.key === 'Escape' && ctx.isMaximized && ctx.isMaximized()) { e.preventDefault(); ctx.toggleMaximize(); }
       else if (e.key === 'ArrowRight' && img) { e.preventDefault(); step(1); }
       else if (e.key === 'ArrowLeft' && img) { e.preventDefault(); step(-1); }
       else if ((e.key === '+' || e.key === '=') && img) { e.preventDefault(); zoomBy(1.25); }

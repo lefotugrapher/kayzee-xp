@@ -194,6 +194,8 @@ export function createWM(stage) {
         openApp: (id, a) => open(id, a, { fromWin: win }),
         setTitle: (t) => win.setTitle(t),
         close: () => win.close(),
+        toggleMaximize: () => win.toggleMax(),
+        isMaximized: () => win.state === 'max',
         setStatus: (s) => win.setStatus(s),
         site: stage.site(),
         icon: (key, px = 16) => stage.icon(key, px),

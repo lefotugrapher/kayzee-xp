@@ -801,9 +801,9 @@ let tod = 'day', todFrom = null, todTo = DAY, todT0 = 0;
 const TOD_MS = 1400;
 const todCur = readState();
 function initialTimeOfDay() {
+  // always start on Day; a visitor's own pick (right-click desktop > Time of Day) is still remembered
   try { const v = localStorage.getItem('kz.tod'); if (TOD[v]) return v; } catch (_) {}
-  const h = new Date().getHours();
-  return h >= 6 && h < 17 ? 'day' : h >= 17 && h < 20 ? 'sunset' : 'night';
+  return 'day';
 }
 function setTimeOfDay(name, { instant = false, remember = true } = {}) {
   if (!TOD[name]) return;
